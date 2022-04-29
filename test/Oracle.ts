@@ -86,6 +86,7 @@ describe("Oracle", () => {
             let oracleResponse = {
                 cid: cid,
                 uri: uri,
+                jsps: jsps,
                 trims: trims,
                 post: post,
                 time: time,
@@ -109,35 +110,62 @@ describe("Oracle", () => {
             oracleResponse.rslts = rsltsMany;
             await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Incorrect number of results");
 
-            await oracle.setOracleResponse(cid, uri, jspsMany, trims, post, time, rslts, sigs).should.be.eventually.rejectedWith("Incorrect number of results");
-            await oracle.setOracleResponse(cid, uri, jspsMany, trims, post, time, rsltsNull, sigs).should.be.eventually.rejectedWith("Incorrect number of results");
-            await oracle.setOracleResponse(cid, uri, jspsMany, trims, post, time, rsltsMany, sigs).should.be.eventually.rejectedWith("Incorrect number of results");
-            await oracle.setOracleResponse(cid, uri, jspsMany, trimsMany, post, time, rslts, sigs).should.be.eventually.rejectedWith("Incorrect number of results");
-            await oracle.setOracleResponse(cid, uri, jspsMany, trimsMany, post, time, rsltsNull, sigs).should.be.eventually.rejectedWith("Incorrect number of results");
-            await oracle.setOracleResponse(cid, uri, jspsMany, trimsNull, post, time, rslts, sigs).should.be.eventually.rejectedWith("Incorrect number of results");
-            await oracle.setOracleResponse(cid, uri, jspsMany, trimsNull, post, time, rsltsNull, sigs).should.be.eventually.rejectedWith("Incorrect number of results");
+            oracleResponse.jsps = jspsMany;
+            oracleResponse.trims = trims;
+            oracleResponse.rslts = rslts;
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Incorrect number of results");
+            oracleResponse.rslts = rsltsNull;
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Incorrect number of results");
+            oracleResponse.rslts = rsltsMany;
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Incorrect number of results");
+            oracleResponse.trims = trimsMany;
+            oracleResponse.rslts = rslts;
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Incorrect number of results");
+            oracleResponse.rslts = rsltsNull;
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Incorrect number of results");
+            oracleResponse.trims = trimsNull;
+            oracleResponse.rslts = rslts;
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Incorrect number of results");
+            oracleResponse.rslts = rsltsNull;
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Incorrect number of results");
 
-            await oracle.setOracleResponse(cid, uri, jspsNull, trims, post, time, rslts, sigs).should.be.eventually.rejectedWith("Incorrect number of results");
-            await oracle.setOracleResponse(cid, uri, jspsNull, trims, post, time, rsltsNull, sigs).should.be.eventually.rejectedWith("Incorrect number of results");
-            await oracle.setOracleResponse(cid, uri, jspsNull, trims, post, time, rsltsMany, sigs).should.be.eventually.rejectedWith("Incorrect number of results");
-            await oracle.setOracleResponse(cid, uri, jspsNull, trimsNull, post, time, rslts, sigs).should.be.eventually.rejectedWith("Incorrect number of results");
-            await oracle.setOracleResponse(cid, uri, jspsNull, trimsNull, post, time, rsltsNull, sigs).should.be.eventually.rejectedWith("Incorrect number of results");
-            await oracle.setOracleResponse(cid, uri, jspsNull, trimsNull, post, time, rsltsMany, sigs).should.be.eventually.rejectedWith("Incorrect number of results");
-            await oracle.setOracleResponse(cid, uri, jspsNull, trimsMany, post, time, rslts, sigs).should.be.eventually.rejectedWith("Incorrect number of results");
-            await oracle.setOracleResponse(cid, uri, jspsNull, trimsMany, post, time, rsltsNull, sigs).should.be.eventually.rejectedWith("Incorrect number of results");
-            await oracle.setOracleResponse(cid, uri, jspsNull, trimsMany, post, time, rsltsMany, sigs).should.be.eventually.rejectedWith("Incorrect number of results");
+            oracleResponse.jsps = jspsNull;
+            oracleResponse.trims = trims;
+            oracleResponse.rslts = rslts;
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Incorrect number of results");
+            oracleResponse.rslts = rsltsNull;
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Incorrect number of results");
+            oracleResponse.rslts = rsltsMany;
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Incorrect number of results");
+            oracleResponse.trims = trimsNull;
+            oracleResponse.rslts = rslts;
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Incorrect number of results");
+            oracleResponse.rslts = rsltsNull;
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Incorrect number of results");
+            oracleResponse.rslts = rsltsMany;
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Incorrect number of results");
+            oracleResponse.trims = trimsMany;
+            oracleResponse.rslts = rslts;
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Incorrect number of results");
+            oracleResponse.rslts = rsltsNull;
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Incorrect number of results");
+            oracleResponse.rslts = rsltsMany;
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Incorrect number of results");
 
             await oracle.setNumberOfNodes(3);
 
-            await oracle.setOracleResponse(cid, uri, jsps, trimsNull, post, time, rslts, sigs).should.be.eventually.rejectedWith("Invalid length of signatures");
+            oracleResponse.jsps = jsps;
+            oracleResponse.trims = trimsNull;
+            oracleResponse.rslts = rslts;
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Invalid length of signatures");
 
             await oracle.setNumberOfNodes(5);
 
-            await oracle.setOracleResponse(cid, uri, jsps, trimsNull, post, time, rslts, sigs).should.be.eventually.rejectedWith("Invalid length of signatures");
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Invalid length of signatures");
 
             await oracle.setNumberOfNodes(4);
 
-            await oracle.setOracleResponse(cid, uri, jsps, trimsNull, post, time, rslts, sigs).should.be.eventually.rejectedWith("Verification is failed");
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Verification is failed");
 
             const wallet1 = ethers.Wallet.createRandom();
             const wallet2 = ethers.Wallet.createRandom();
@@ -159,7 +187,7 @@ describe("Oracle", () => {
             const signingKey3 = new ethers.utils.SigningKey(wallet31.privateKey);
             const signingKey4 = new ethers.utils.SigningKey(wallet41.privateKey);
 
-            let data = ethers.utils.id(await oracle.combineOracleResponse(cid, uri, jsps, trims, post, time, rslts));
+            let data = ethers.utils.id(await oracle.combineOracleResponse(oracleResponse));
             let digestHex = ethers.utils.hexlify(data);
 
             let signature1 = signingKey1.signDigest(digestHex);
@@ -188,7 +216,9 @@ describe("Oracle", () => {
                 s: signature4.s,
             };
 
-            await oracle.setOracleResponse(cid, uri, jsps, trimsNull, post, time, rslts, sigs).should.be.eventually.rejectedWith("Verification is failed");
+            oracleResponse.sigs = sigs;
+
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Verification is failed");
         });
     });
 
@@ -216,7 +246,18 @@ describe("Oracle", () => {
         const sigs: {v: number, r: string, s: string}[] = [];
 
         it("should create a JSON string to sign", async () => {
-            const dataByContract = await oracle.combineOracleResponse(cid, uri, jsps, trims, post, time, rslts);
+            let oracleResponse = {
+                cid: cid,
+                uri: uri,
+                jsps: jsps,
+                trims: trims,
+                post: post,
+                time: time,
+                rslts: rslts,
+                sigs: sigs
+            }
+
+            const dataByContract = await oracle.combineOracleResponse(oracleResponse);
 
             assert(dataByContract.should.be.equal(dataToSign));
         });
@@ -255,7 +296,18 @@ describe("Oracle", () => {
             const signingKey3 = new ethers.utils.SigningKey(wallet3.privateKey);
             const signingKey4 = new ethers.utils.SigningKey(wallet4.privateKey);
 
-            let data = ethers.utils.id(await oracle.combineOracleResponse(cid, uri, jsps, trims, post, time, rslts));
+            let oracleResponse = {
+                cid: cid,
+                uri: uri,
+                jsps: jsps,
+                trims: trims,
+                post: post,
+                time: time,
+                rslts: rslts,
+                sigs: sigs
+            }
+
+            let data = ethers.utils.id(await oracle.combineOracleResponse(oracleResponse));
             let digestHex = ethers.utils.hexlify(data);
 
             let signature1 = signingKey1.signDigest(digestHex);
@@ -283,15 +335,19 @@ describe("Oracle", () => {
                 r: signature4.r,
                 s: signature4.s,
             });
+
+            oracleResponse.sigs = sigs;
     
-            await oracle.setOracleResponse(cid, uri, jsps, trims, post, time, rslts, sigs);
+            await oracle.setOracleResponse(oracleResponse);
 
             let res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
             assert(res.should.be.equal(rslts[0]));
 
             rslts[0] = "Hellow_World2";
 
-            data = ethers.utils.id(await oracle.combineOracleResponse(cid, uri, jsps, trims, post, time, rslts));
+            oracleResponse.rslts = rslts;
+
+            data = ethers.utils.id(await oracle.combineOracleResponse(oracleResponse));
             digestHex = ethers.utils.hexlify(data);
 
             signature1 = signingKey1.signDigest(digestHex);
@@ -320,7 +376,9 @@ describe("Oracle", () => {
                 s: signature4.s,
             };
 
-            await oracle.setOracleResponse(cid, uri, jsps, trims, post, time, rslts, sigs);
+            oracleResponse.sigs = sigs;
+
+            await oracle.setOracleResponse(oracleResponse);
 
             res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
             assert(res.should.be.equal(rslts[0]));
@@ -360,7 +418,18 @@ describe("Oracle", () => {
             const signingKey3 = new ethers.utils.SigningKey(wallet3.privateKey);
             const signingKey4 = new ethers.utils.SigningKey(wallet4.privateKey);
 
-            let data = ethers.utils.id(await oracle.combineOracleResponse(cid, uri, jsps, trims, post, time, rslts));
+            let oracleResponse = {
+                cid: cid,
+                uri: uri,
+                jsps: jsps,
+                trims: trims,
+                post: post,
+                time: time,
+                rslts: rslts,
+                sigs: sigs
+            }
+
+            let data = ethers.utils.id(await oracle.combineOracleResponse(oracleResponse));
             let digestHex = ethers.utils.hexlify(data);
 
             let signature1 = signingKey1.signDigest(digestHex);
@@ -388,10 +457,12 @@ describe("Oracle", () => {
                 r: "0x0000000000000000000000000000000000000000000000000000000000000000",
                 s: "0x0000000000000000000000000000000000000000000000000000000000000000",
             };
-    
-            await oracle.setOracleResponse(cid, uri, jsps, trims, post, time, rslts, sigs).should.be.eventually.rejectedWith("Verification is failed");
 
-            data = ethers.utils.id(await oracle.combineOracleResponse(cid, uri, jsps, trims, post, time, rslts));
+            oracleResponse.sigs = sigs;
+    
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Verification is failed");
+
+            data = ethers.utils.id(await oracle.combineOracleResponse(oracleResponse));
             digestHex = ethers.utils.hexlify(data);
 
             signature1 = signingKey1.signDigest(digestHex);
@@ -405,7 +476,9 @@ describe("Oracle", () => {
                 s: signature1.s,
             };
 
-            await oracle.setOracleResponse(cid, uri, jsps, trims, post, time, rslts, sigs).should.be.eventually.rejectedWith("Verification is failed");
+            oracleResponse.sigs = sigs;
+
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Verification is failed");
 
             sigs[1] = {
                 v: signature4.v,
@@ -413,7 +486,9 @@ describe("Oracle", () => {
                 s: signature4.s,
             };
 
-            await oracle.setOracleResponse(cid, uri, jsps, trims, post, time, rslts, sigs).should.be.eventually.rejectedWith("Verification is failed");
+            oracleResponse.sigs = sigs;
+
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Verification is failed");
 
             sigs[2] = {
                 v: signature3.v,
@@ -421,7 +496,9 @@ describe("Oracle", () => {
                 s: signature3.s,
             };
 
-            await oracle.setOracleResponse(cid, uri, jsps, trims, post, time, rslts, sigs);
+            oracleResponse.sigs = sigs;
+
+            await oracle.setOracleResponse(oracleResponse);
 
             const res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
             assert(res.should.be.equal(rslts[0]));
@@ -454,7 +531,18 @@ describe("Oracle", () => {
         const sigs: {v: number, r: string, s: string}[] = [];
 
         it("should create a JSON string to sign", async () => {
-            const dataByContract = await oracle.combineOracleResponse(cid, uri, jsps, trims, post, time, rslts);
+            let oracleResponse = {
+                cid: cid,
+                uri: uri,
+                jsps: jsps,
+                trims: trims,
+                post: post,
+                time: time,
+                rslts: rslts,
+                sigs: sigs
+            }
+
+            const dataByContract = await oracle.combineOracleResponse(oracleResponse);
 
             assert(dataByContract.should.be.equal(dataToSign));
         });
@@ -493,7 +581,18 @@ describe("Oracle", () => {
             const signingKey3 = new ethers.utils.SigningKey(wallet3.privateKey);
             const signingKey4 = new ethers.utils.SigningKey(wallet4.privateKey);
 
-            let data = ethers.utils.id(await oracle.combineOracleResponse(cid, uri, jsps, trims, post, time, rslts));
+            let oracleResponse = {
+                cid: cid,
+                uri: uri,
+                jsps: jsps,
+                trims: trims,
+                post: post,
+                time: time,
+                rslts: rslts,
+                sigs: sigs
+            }
+
+            let data = ethers.utils.id(await oracle.combineOracleResponse(oracleResponse));
             let digestHex = ethers.utils.hexlify(data);
 
             let signature1 = signingKey1.signDigest(digestHex);
@@ -521,15 +620,19 @@ describe("Oracle", () => {
                 r: signature4.r,
                 s: signature4.s,
             });
+
+            oracleResponse.sigs = sigs;
     
-            await oracle.setOracleResponse(cid, uri, jsps, trims, post, time, rslts, sigs);
+            await oracle.setOracleResponse(oracleResponse);
 
             let res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
             assert(res.should.be.equal(rslts[0]));
 
             rslts[0] = "Hellow_World2";
 
-            data = ethers.utils.id(await oracle.combineOracleResponse(cid, uri, jsps, trims, post, time, rslts));
+            oracleResponse.rslts = rslts;
+
+            data = ethers.utils.id(await oracle.combineOracleResponse(oracleResponse));
             digestHex = ethers.utils.hexlify(data);
 
             signature1 = signingKey1.signDigest(digestHex);
@@ -558,7 +661,9 @@ describe("Oracle", () => {
                 s: signature4.s,
             };
 
-            await oracle.setOracleResponse(cid, uri, jsps, trims, post, time, rslts, sigs);
+            oracleResponse.sigs = sigs;
+
+            await oracle.setOracleResponse(oracleResponse);
 
             res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
             assert(res.should.be.equal(rslts[0]));
@@ -598,7 +703,18 @@ describe("Oracle", () => {
             const signingKey3 = new ethers.utils.SigningKey(wallet3.privateKey);
             const signingKey4 = new ethers.utils.SigningKey(wallet4.privateKey);
 
-            let data = ethers.utils.id(await oracle.combineOracleResponse(cid, uri, jsps, trims, post, time, rslts));
+            let oracleResponse = {
+                cid: cid,
+                uri: uri,
+                jsps: jsps,
+                trims: trims,
+                post: post,
+                time: time,
+                rslts: rslts,
+                sigs: sigs
+            }
+
+            let data = ethers.utils.id(await oracle.combineOracleResponse(oracleResponse));
             let digestHex = ethers.utils.hexlify(data);
 
             let signature1 = signingKey1.signDigest(digestHex);
@@ -626,10 +742,12 @@ describe("Oracle", () => {
                 r: "0x0000000000000000000000000000000000000000000000000000000000000000",
                 s: "0x0000000000000000000000000000000000000000000000000000000000000000",
             };
-    
-            await oracle.setOracleResponse(cid, uri, jsps, trims, post, time, rslts, sigs).should.be.eventually.rejectedWith("Verification is failed");
 
-            data = ethers.utils.id(await oracle.combineOracleResponse(cid, uri, jsps, trims, post, time, rslts));
+            oracleResponse.sigs = sigs;
+    
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Verification is failed");
+
+            data = ethers.utils.id(await oracle.combineOracleResponse(oracleResponse));
             digestHex = ethers.utils.hexlify(data);
 
             signature1 = signingKey1.signDigest(digestHex);
@@ -643,7 +761,9 @@ describe("Oracle", () => {
                 s: signature1.s,
             };
 
-            await oracle.setOracleResponse(cid, uri, jsps, trims, post, time, rslts, sigs).should.be.eventually.rejectedWith("Verification is failed");
+            oracleResponse.sigs = sigs;
+
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Verification is failed");
 
             sigs[1] = {
                 v: signature4.v,
@@ -651,7 +771,9 @@ describe("Oracle", () => {
                 s: signature4.s,
             };
 
-            await oracle.setOracleResponse(cid, uri, jsps, trims, post, time, rslts, sigs).should.be.eventually.rejectedWith("Verification is failed");
+            oracleResponse.sigs = sigs;
+
+            await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Verification is failed");
 
             sigs[2] = {
                 v: signature3.v,
@@ -659,7 +781,9 @@ describe("Oracle", () => {
                 s: signature3.s,
             };
 
-            await oracle.setOracleResponse(cid, uri, jsps, trims, post, time, rslts, sigs);
+            oracleResponse.sigs = sigs;
+
+            await oracle.setOracleResponse(oracleResponse);
 
             const res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
             assert(res.should.be.equal(rslts[0]));
@@ -722,7 +846,18 @@ describe("Oracle", () => {
         const nodePublicKeyInSchain4: string = "0x04edb47dbc4737489d66ef6a816b67828c4f6ae28427e6a267aa04db576ebe628d976a3e45ba3705571d8e59637d1cc9ada855218a99ce12df845c5bcfc21aa958";
 
         it("should create a JSON string to sign", async () => {
-            const dataByContract = await oracle.combineOracleResponse(cid, uri, jsps, trims, post, time, rslts);
+            let oracleResponse = {
+                cid: cid,
+                uri: uri,
+                jsps: jsps,
+                trims: trims,
+                post: post,
+                time: time,
+                rslts: rslts,
+                sigs: sigs
+            }
+
+            const dataByContract = await oracle.combineOracleResponse(oracleResponse);
 
             assert(dataByContract.should.be.equal(dataToSign));
         });
@@ -755,8 +890,19 @@ describe("Oracle", () => {
             assert(nodeAddress2.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain2)));
             assert(nodeAddress3.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain3)));
             assert(nodeAddress4.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain4)));
+
+            let oracleResponse = {
+                cid: cid,
+                uri: uri,
+                jsps: jsps,
+                trims: trims,
+                post: post,
+                time: time,
+                rslts: rslts,
+                sigs: sigs
+            }
     
-            await oracle.setOracleResponse(cid, uri, jsps, trims, post, time, rslts, sigs);
+            await oracle.setOracleResponse(oracleResponse);
 
             const res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
             assert(res.should.be.equal(rslts[0]));
@@ -819,7 +965,18 @@ describe("Oracle", () => {
         const nodePublicKeyInSchain4: string = "0x04edb47dbc4737489d66ef6a816b67828c4f6ae28427e6a267aa04db576ebe628d976a3e45ba3705571d8e59637d1cc9ada855218a99ce12df845c5bcfc21aa958";
 
         it("should create a JSON string to sign", async () => {
-            const dataByContract = await oracle.combineOracleResponse(cid, uri, jsps, trims, post, time, rslts);
+            let oracleResponse = {
+                cid: cid,
+                uri: uri,
+                jsps: jsps,
+                trims: trims,
+                post: post,
+                time: time,
+                rslts: rslts,
+                sigs: sigs
+            }
+
+            const dataByContract = await oracle.combineOracleResponse(oracleResponse);
 
             assert(dataByContract.should.be.equal(dataToSign));
         });
@@ -852,8 +1009,19 @@ describe("Oracle", () => {
             assert(nodeAddress2.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain2)));
             assert(nodeAddress3.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain3)));
             assert(nodeAddress4.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain4)));
+
+            let oracleResponse = {
+                cid: cid,
+                uri: uri,
+                jsps: jsps,
+                trims: trims,
+                post: post,
+                time: time,
+                rslts: rslts,
+                sigs: sigs
+            }
     
-            await oracle.setOracleResponse(cid, uri, jsps, trims, post, time, rslts, sigs);
+            await oracle.setOracleResponse(oracleResponse);
 
             const res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
             assert(res.should.be.equal(rslts[0]));
