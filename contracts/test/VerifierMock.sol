@@ -5,7 +5,12 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 import "../Verifier.sol";
 
-contract VerifierMock is Verifier {
+interface IVerifierMock {
+    function setNodeAddress(address nodeAddress) external;
+    function setNumberOfNodes(uint256 amountOfNodes) external;
+}
+
+contract VerifierMock is Verifier, IVerifierMock {
     using ECDSA for bytes32;
 
     address[] public nodeAddresses;
@@ -13,11 +18,11 @@ contract VerifierMock is Verifier {
     uint256 public numberOfNodes;
 
 
-    function setNodeAddress(address nodeAddress) public {
+    function setNodeAddress(address nodeAddress) public override {
         nodeAddresses.push(nodeAddress);
     }
 
-    function setNumberOfNodes(uint256 amountOfNodes) public {
+    function setNumberOfNodes(uint256 amountOfNodes) public override {
         numberOfNodes = amountOfNodes;
     }
 

@@ -18,7 +18,10 @@ contract Verifier is Reader, IVerifier {
         override
         returns (bool)
     {
-        string memory pathToAddress = string.concat("skaleConfig.sChain.nodes[", Strings.toString(nodeIndex), "].owner");
+        string memory pathToAddress = string.concat(
+            "skaleConfig.sChain.nodes[",
+            Strings.toString(nodeIndex), "].owner"
+        );
         address nodeAddress = _getConfigVariableAddress(pathToAddress);
         return nodeAddress == hashedMessage.recover(signature.v, signature.r, signature.s);
     }

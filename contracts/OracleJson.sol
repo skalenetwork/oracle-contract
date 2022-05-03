@@ -41,34 +41,30 @@ contract OracleJson is IOracleJson {
         wholeData = string.concat(wholeData, "\"cid\":", Strings.toString(cid), ",");
         wholeData = string.concat(wholeData, "\"uri\":\"", uri, "\",");
         wholeData = string.concat(wholeData, "\"jsps\":[");
-        for (uint256 i = 0; i < jsps.length - 1; i++) {
+        for (uint256 i = 0; i < jsps.length - 1; i++)
             wholeData = string.concat(wholeData, "\"", jsps[i], "\",");
-        }
         wholeData = string.concat(wholeData, "\"", jsps[jsps.length - 1], "\"],");
         if (trims.length != 0) {
             wholeData = string.concat(wholeData, "\"trims\":[");
-            for (uint256 i = 0; i < trims.length - 1; i++) {
+            for (uint256 i = 0; i < trims.length - 1; i++)
                 wholeData = string.concat(wholeData, Strings.toString(trims[i]), ",");
-            }
             wholeData = string.concat(wholeData, Strings.toString(trims[trims.length - 1]), "],");
         }
-        if (bytes(post).length != 0) {
+        if (bytes(post).length != 0)
             wholeData = string.concat(wholeData, "\"post\":\"", post, "\",");
-        }
         wholeData = string.concat(wholeData, "\"time\":", Strings.toString(time), ",");
         wholeData = string.concat(wholeData, "\"rslts\":[");
-        for (uint256 i = 0; i < rslts.length - 1; i++) {
-            if (!_compareString(rslts[i], "null")) {
-                wholeData = string.concat(wholeData, "\"", rslts[i], "\",");
-            } else {
-                wholeData = string.concat(wholeData, "null,");
-            }
-        }
-        if (!_compareString(rslts[rslts.length - 1], "null")) {
-            wholeData = string.concat(wholeData, "\"", rslts[rslts.length - 1], "\"],");
-        } else {
-            wholeData = string.concat(wholeData, "null],");
-        }
+        for (uint256 i = 0; i < rslts.length - 1; i++)
+            wholeData = string.concat(
+                wholeData,
+                !_compareString(rslts[i], "null") ? string.concat("\"", rslts[i], "\",") : "null,"
+            );
+        wholeData = string.concat(
+            wholeData,
+            !_compareString(rslts[rslts.length - 1], "null") ?
+                string.concat("\"", rslts[rslts.length - 1], "\"],") :
+                "null],"
+        );
     }
 
     function _compareString(string memory a, string memory b) private pure returns (bool) {

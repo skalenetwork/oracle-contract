@@ -44,7 +44,7 @@ describe("Oracle", () => {
     })
 
     describe("Negative tests", async () => {
-    
+
         it("should impossible to send response with incorrect data", async () => {
             const cid: number = 1;
             const uri: string = "https://www.binance.com/api/v3/time";
@@ -83,15 +83,15 @@ describe("Oracle", () => {
                 },
             ];
 
-            let oracleResponse = {
-                cid: cid,
-                uri: uri,
-                jsps: jsps,
-                trims: trims,
-                post: post,
-                time: time,
+            const oracleResponse = {
+                cid,
+                uri,
+                jsps,
+                trims,
+                post,
+                time,
                 rslts: rsltsMany,
-                sigs: sigs
+                sigs
             }
 
             await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Incorrect number of results");
@@ -187,13 +187,13 @@ describe("Oracle", () => {
             const signingKey3 = new ethers.utils.SigningKey(wallet31.privateKey);
             const signingKey4 = new ethers.utils.SigningKey(wallet41.privateKey);
 
-            let data = ethers.utils.id(await oracle.combineOracleResponse(oracleResponse));
-            let digestHex = ethers.utils.hexlify(data);
+            const data = ethers.utils.id(await oracle.combineOracleResponse(oracleResponse));
+            const digestHex = ethers.utils.hexlify(data);
 
-            let signature1 = signingKey1.signDigest(digestHex);
-            let signature2 = signingKey2.signDigest(digestHex);
-            let signature3 = signingKey3.signDigest(digestHex);
-            let signature4 = signingKey4.signDigest(digestHex);
+            const signature1 = signingKey1.signDigest(digestHex);
+            const signature2 = signingKey2.signDigest(digestHex);
+            const signature3 = signingKey3.signDigest(digestHex);
+            const signature4 = signingKey4.signDigest(digestHex);
 
             sigs[0] = {
                 v: signature1.v,
@@ -235,7 +235,7 @@ describe("Oracle", () => {
         // }
 
         const dataToSign = "{\"cid\":1234,\"uri\":\"https://www.helloworld.com\",\"jsps\":[\"/greetings\"],\"trims\":[0],\"time\":1649253252000,\"rslts\":[\"Hello_World\"],";
-    
+
         const cid: number = 1234;
         const uri: string = "https://www.helloworld.com";
         const jsps: string[] = ["/greetings"];
@@ -246,29 +246,29 @@ describe("Oracle", () => {
         const sigs: {v: number, r: string, s: string}[] = [];
 
         it("should create a JSON string to sign", async () => {
-            let oracleResponse = {
-                cid: cid,
-                uri: uri,
-                jsps: jsps,
-                trims: trims,
-                post: post,
-                time: time,
-                rslts: rslts,
-                sigs: sigs
+            const oracleResponse = {
+                cid,
+                uri,
+                jsps,
+                trims,
+                post,
+                time,
+                rslts,
+                sigs
             }
 
             const dataByContract = await oracle.combineOracleResponse(oracleResponse);
 
             assert(dataByContract.should.be.equal(dataToSign));
         });
-    
+
         it("should verify oracle response", async () => {
 
             const wallet1 = ethers.Wallet.createRandom();
             const wallet2 = ethers.Wallet.createRandom();
             const wallet3 = ethers.Wallet.createRandom();
             const wallet4 = ethers.Wallet.createRandom();
-            
+
             await oracle.setNumberOfNodes(4);
             const numberOfNodes = await oracle.getNumberOfNodesInSchain();
             assert(numberOfNodes.should.be.equal(4));
@@ -296,15 +296,15 @@ describe("Oracle", () => {
             const signingKey3 = new ethers.utils.SigningKey(wallet3.privateKey);
             const signingKey4 = new ethers.utils.SigningKey(wallet4.privateKey);
 
-            let oracleResponse = {
-                cid: cid,
-                uri: uri,
-                jsps: jsps,
-                trims: trims,
-                post: post,
-                time: time,
-                rslts: rslts,
-                sigs: sigs
+            const oracleResponse = {
+                cid,
+                uri,
+                jsps,
+                trims,
+                post,
+                time,
+                rslts,
+                sigs
             }
 
             let data = ethers.utils.id(await oracle.combineOracleResponse(oracleResponse));
@@ -337,7 +337,7 @@ describe("Oracle", () => {
             });
 
             oracleResponse.sigs = sigs;
-    
+
             await oracle.setOracleResponse(oracleResponse);
 
             let res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
@@ -390,7 +390,7 @@ describe("Oracle", () => {
             const wallet2 = ethers.Wallet.createRandom();
             const wallet3 = ethers.Wallet.createRandom();
             const wallet4 = ethers.Wallet.createRandom();
-            
+
             await oracle.setNumberOfNodes(4);
             const numberOfNodes = await oracle.getNumberOfNodesInSchain();
             assert(numberOfNodes.should.be.equal(4));
@@ -418,15 +418,15 @@ describe("Oracle", () => {
             const signingKey3 = new ethers.utils.SigningKey(wallet3.privateKey);
             const signingKey4 = new ethers.utils.SigningKey(wallet4.privateKey);
 
-            let oracleResponse = {
-                cid: cid,
-                uri: uri,
-                jsps: jsps,
-                trims: trims,
-                post: post,
-                time: time,
-                rslts: rslts,
-                sigs: sigs
+            const oracleResponse = {
+                cid,
+                uri,
+                jsps,
+                trims,
+                post,
+                time,
+                rslts,
+                sigs
             }
 
             let data = ethers.utils.id(await oracle.combineOracleResponse(oracleResponse));
@@ -459,7 +459,7 @@ describe("Oracle", () => {
             };
 
             oracleResponse.sigs = sigs;
-    
+
             await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Verification is failed");
 
             data = ethers.utils.id(await oracle.combineOracleResponse(oracleResponse));
@@ -520,7 +520,7 @@ describe("Oracle", () => {
         // }
 
         const dataToSign = "{\"cid\":1234,\"uri\":\"https://www.helloworld.com\",\"jsps\":[\"/greetings\"],\"post\":\"/say_greetings\",\"time\":1649253252000,\"rslts\":[\"Hello_World\"],";
-    
+
         const cid: number = 1234;
         const uri: string = "https://www.helloworld.com";
         const jsps: string[] = ["/greetings"];
@@ -531,29 +531,29 @@ describe("Oracle", () => {
         const sigs: {v: number, r: string, s: string}[] = [];
 
         it("should create a JSON string to sign", async () => {
-            let oracleResponse = {
-                cid: cid,
-                uri: uri,
-                jsps: jsps,
-                trims: trims,
-                post: post,
-                time: time,
-                rslts: rslts,
-                sigs: sigs
+            const oracleResponse = {
+                cid,
+                uri,
+                jsps,
+                trims,
+                post,
+                time,
+                rslts,
+                sigs
             }
 
             const dataByContract = await oracle.combineOracleResponse(oracleResponse);
 
             assert(dataByContract.should.be.equal(dataToSign));
         });
-    
+
         it("should verify oracle response", async () => {
 
             const wallet1 = ethers.Wallet.createRandom();
             const wallet2 = ethers.Wallet.createRandom();
             const wallet3 = ethers.Wallet.createRandom();
             const wallet4 = ethers.Wallet.createRandom();
-            
+
             await oracle.setNumberOfNodes(4);
             const numberOfNodes = await oracle.getNumberOfNodesInSchain();
             assert(numberOfNodes.should.be.equal(4));
@@ -581,15 +581,15 @@ describe("Oracle", () => {
             const signingKey3 = new ethers.utils.SigningKey(wallet3.privateKey);
             const signingKey4 = new ethers.utils.SigningKey(wallet4.privateKey);
 
-            let oracleResponse = {
-                cid: cid,
-                uri: uri,
-                jsps: jsps,
-                trims: trims,
-                post: post,
-                time: time,
-                rslts: rslts,
-                sigs: sigs
+            const oracleResponse = {
+                cid,
+                uri,
+                jsps,
+                trims,
+                post,
+                time,
+                rslts,
+                sigs
             }
 
             let data = ethers.utils.id(await oracle.combineOracleResponse(oracleResponse));
@@ -622,7 +622,7 @@ describe("Oracle", () => {
             });
 
             oracleResponse.sigs = sigs;
-    
+
             await oracle.setOracleResponse(oracleResponse);
 
             let res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
@@ -675,7 +675,7 @@ describe("Oracle", () => {
             const wallet2 = ethers.Wallet.createRandom();
             const wallet3 = ethers.Wallet.createRandom();
             const wallet4 = ethers.Wallet.createRandom();
-            
+
             await oracle.setNumberOfNodes(4);
             const numberOfNodes = await oracle.getNumberOfNodesInSchain();
             assert(numberOfNodes.should.be.equal(4));
@@ -703,15 +703,15 @@ describe("Oracle", () => {
             const signingKey3 = new ethers.utils.SigningKey(wallet3.privateKey);
             const signingKey4 = new ethers.utils.SigningKey(wallet4.privateKey);
 
-            let oracleResponse = {
-                cid: cid,
-                uri: uri,
-                jsps: jsps,
-                trims: trims,
-                post: post,
-                time: time,
-                rslts: rslts,
-                sigs: sigs
+            const oracleResponse = {
+                cid,
+                uri,
+                jsps,
+                trims,
+                post,
+                time,
+                rslts,
+                sigs
             }
 
             let data = ethers.utils.id(await oracle.combineOracleResponse(oracleResponse));
@@ -744,7 +744,7 @@ describe("Oracle", () => {
             };
 
             oracleResponse.sigs = sigs;
-    
+
             await oracle.setOracleResponse(oracleResponse).should.be.eventually.rejectedWith("Verification is failed");
 
             data = ethers.utils.id(await oracle.combineOracleResponse(oracleResponse));
@@ -810,7 +810,7 @@ describe("Oracle", () => {
         // }
 
         const dataToSign = "{\"cid\":1,\"uri\":\"http://worldtimeapi.org/api/timezone/Europe/Kiev\",\"jsps\":[\"/unixtime\",\"/day_of_year\"],\"trims\":[4,0],\"time\":1649716742000,\"rslts\":[\"164971\",\"102\"],";
-    
+
         const cid: number = 1;
         const uri: string = "http://worldtimeapi.org/api/timezone/Europe/Kiev";
         const jsps: string[] = ["/unixtime","/day_of_year"];
@@ -846,24 +846,24 @@ describe("Oracle", () => {
         const nodePublicKeyInSchain4: string = "0x04edb47dbc4737489d66ef6a816b67828c4f6ae28427e6a267aa04db576ebe628d976a3e45ba3705571d8e59637d1cc9ada855218a99ce12df845c5bcfc21aa958";
 
         it("should create a JSON string to sign", async () => {
-            let oracleResponse = {
-                cid: cid,
-                uri: uri,
-                jsps: jsps,
-                trims: trims,
-                post: post,
-                time: time,
-                rslts: rslts,
-                sigs: sigs
+            const oracleResponse = {
+                cid,
+                uri,
+                jsps,
+                trims,
+                post,
+                time,
+                rslts,
+                sigs
             }
 
             const dataByContract = await oracle.combineOracleResponse(oracleResponse);
 
             assert(dataByContract.should.be.equal(dataToSign));
         });
-    
+
         it("should verify oracle response", async () => {
-            
+
             await oracle.setNumberOfNodes(4);
             const numberOfNodes = await oracle.getNumberOfNodesInSchain();
             assert(numberOfNodes.should.be.equal(4));
@@ -891,17 +891,17 @@ describe("Oracle", () => {
             assert(nodeAddress3.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain3)));
             assert(nodeAddress4.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain4)));
 
-            let oracleResponse = {
-                cid: cid,
-                uri: uri,
-                jsps: jsps,
-                trims: trims,
-                post: post,
-                time: time,
-                rslts: rslts,
-                sigs: sigs
+            const oracleResponse = {
+                cid,
+                uri,
+                jsps,
+                trims,
+                post,
+                time,
+                rslts,
+                sigs
             }
-    
+
             await oracle.setOracleResponse(oracleResponse);
 
             const res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
@@ -928,7 +928,7 @@ describe("Oracle", () => {
         // }
 
         const dataToSign = "{\"cid\":1,\"uri\":\"https://www.binance.com/api/v3/time\",\"jsps\":[\"/serverTime\"],\"trims\":[4],\"time\":1649716768000,\"rslts\":[\"164971676\"],";
-    
+
         const cid: number = 1;
         const uri: string = "https://www.binance.com/api/v3/time";
         const jsps: string[] = ["/serverTime"];
@@ -965,24 +965,24 @@ describe("Oracle", () => {
         const nodePublicKeyInSchain4: string = "0x04edb47dbc4737489d66ef6a816b67828c4f6ae28427e6a267aa04db576ebe628d976a3e45ba3705571d8e59637d1cc9ada855218a99ce12df845c5bcfc21aa958";
 
         it("should create a JSON string to sign", async () => {
-            let oracleResponse = {
-                cid: cid,
-                uri: uri,
-                jsps: jsps,
-                trims: trims,
-                post: post,
-                time: time,
-                rslts: rslts,
-                sigs: sigs
+            const oracleResponse = {
+                cid,
+                uri,
+                jsps,
+                trims,
+                post,
+                time,
+                rslts,
+                sigs
             }
 
             const dataByContract = await oracle.combineOracleResponse(oracleResponse);
 
             assert(dataByContract.should.be.equal(dataToSign));
         });
-    
+
         it("should verify oracle response", async () => {
-            
+
             await oracle.setNumberOfNodes(4);
             const numberOfNodes = await oracle.getNumberOfNodesInSchain();
             assert(numberOfNodes.should.be.equal(4));
@@ -1010,17 +1010,17 @@ describe("Oracle", () => {
             assert(nodeAddress3.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain3)));
             assert(nodeAddress4.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain4)));
 
-            let oracleResponse = {
-                cid: cid,
-                uri: uri,
-                jsps: jsps,
-                trims: trims,
-                post: post,
-                time: time,
-                rslts: rslts,
-                sigs: sigs
+            const oracleResponse = {
+                cid,
+                uri,
+                jsps,
+                trims,
+                post,
+                time,
+                rslts,
+                sigs
             }
-    
+
             await oracle.setOracleResponse(oracleResponse);
 
             const res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
