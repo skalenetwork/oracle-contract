@@ -15,8 +15,4 @@ interface IVerifier {
         returns (bool);
 
     function verifyArrayOfSignatures(bytes32 hashedMessage, Signature[] memory signatures) external view returns (bool);
-
-    function getCountOfTrustNumber() external view returns (uint);
-
-    function getNumberOfNodesInSchain() external view returns (uint256);
 }

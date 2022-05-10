@@ -6,31 +6,6 @@ import "./OracleJson.sol";
 import "./interfaces/IOracle.sol";
 
 contract Oracle is Verifier, OracleJson, IOracle {
-    mapping(bytes32 => string) public data;
-
-    function setOracleResponse(
-        OracleResponse memory response
-    )
-        public
-        override
-    {
-        require(verifyOracleResponse(response), "Verification is failed");
-        // store results
-        for (uint256 i = 0; i < response.jsps.length; i++) {
-            data[
-                keccak256(
-                    abi.encodePacked(
-                        string.concat(
-                            response.uri,
-                            response.jsps[i],
-                            (bytes(response.post).length > 0 ? response.post : "")
-                        )
-                    )
-                )
-            ] = response.rslts[i];
-        }
-        emit DataUpdated(response.cid, response.time);
-    }
 
     function verifyOracleResponse(OracleResponse memory response) public view override returns (bool) {
         require(

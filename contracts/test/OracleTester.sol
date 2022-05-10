@@ -1,12 +1,23 @@
 // SPDX-License-Identifier: AGPL-3.0
 pragma solidity 0.8.13;
 
-import "../interfaces/IOracle.sol";
+import "../Oracle.sol";
 
-import "./VerifierMock.sol";
-import "../OracleJson.sol";
+interface IOracleTester is IOracle {
 
-contract OracleTester is VerifierMock, OracleJson, IOracle {
+    event DataUpdated(uint256 indexed cid, uint256 indexed time);
+
+    function setOracleResponse(OracleResponse memory response) external;
+
+    function setNodeAddress(address nodeAddress) external;
+    function setNumberOfNodes(uint256 amountOfNodes) external;
+}
+
+contract OracleTester is Oracle, IOracleTester {
+    address[] public nodeAddresses;
+
+    uint256 public numberOfNodes;
+
     mapping(bytes32 => string) public data;
 
     function setOracleResponse(
@@ -33,16 +44,15 @@ contract OracleTester is VerifierMock, OracleJson, IOracle {
         emit DataUpdated(response.cid, response.time);
     }
 
-    function verifyOracleResponse(OracleResponse memory response) public view override returns (bool) {
-        require(
-            response.jsps.length > 0 && response.jsps.length == response.rslts.length &&
-            (response.trims.length == 0 || response.trims.length == response.rslts.length),
-            "Incorrect number of results"
-        );
-        // verify signature
-        require(response.sigs.length == getNumberOfNodesInSchain(), "Invalid length of signatures");
-        string memory oracleData = combineOracleResponse(response);
-        bytes32 hashedMessage = keccak256(abi.encodePacked(oracleData));
-        return verifyArrayOfSignatures(hashedMessage, response.sigs);
+    function setNodeAddress(address nodeAddress) public override {
+        nodeAddresses.push(nodeAddress);
+    }
+
+    function setNumberOfNodes(uint256 amountOfNodes) public override {
+        numberOfNodes = amountOfNodes;
+    }
+
+    function getNumberOfNodesInSchain() public view override returns (uint256) {
+        return numberOfNodes;
     }
 }

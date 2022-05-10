@@ -15,10 +15,6 @@ interface IOracle {
         string[] rslts;
         IVerifier.Signature[] sigs;
     }
-
-    event DataUpdated(uint256 indexed cid, uint256 indexed time);
-
-    function setOracleResponse(OracleResponse memory response) external;
     
     function verifyOracleResponse(OracleResponse memory response) external view returns (bool);
 }

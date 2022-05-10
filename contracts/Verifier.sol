@@ -5,9 +5,9 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 import "./interfaces/IVerifier.sol";
 
-import "./Reader.sol";
+import "./NodesReader.sol";
 
-contract Verifier is Reader, IVerifier {
+contract Verifier is NodesReader, IVerifier {
 
     using ECDSA for bytes32;
 
@@ -18,11 +18,7 @@ contract Verifier is Reader, IVerifier {
         override
         returns (bool)
     {
-        string memory pathToAddress = string.concat(
-            "skaleConfig.sChain.nodes[",
-            Strings.toString(nodeIndex), "].owner"
-        );
-        address nodeAddress = _getConfigVariableAddress(pathToAddress);
+        address nodeAddress = getNodeAddress(nodeIndex);
         return nodeAddress == hashedMessage.recover(signature.v, signature.r, signature.s);
     }
 
@@ -39,14 +35,5 @@ contract Verifier is Reader, IVerifier {
             }
         }
         return verifiedAmount >= getCountOfTrustNumber();
-    }
-
-    function getCountOfTrustNumber() public view override returns (uint) {
-        uint n = getNumberOfNodesInSchain();
-        return (n + 2) / 3; // n - (n * 2 + 1) / 3 + 1 = (n * 3 - n * 2 - 1 + 3) / 3 = (n + 2) / 3
-    }
-
-    function getNumberOfNodesInSchain() public view virtual override returns (uint256) {
-        return _getConfigVariableUint256("skaleConfig.nodeInfo.wallets.ima.n");
     }
 }
