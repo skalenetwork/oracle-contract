@@ -52,6 +52,10 @@ contract OracleTester is Oracle, IOracleTester {
         numberOfNodes = amountOfNodes;
     }
 
+    function getNodeAddress(uint256 nodeIndex) public view override returns (address) {
+        return nodeAddresses[nodeIndex];
+    }
+
     function getNumberOfNodesInSchain() public view override returns (uint256) {
         return numberOfNodes;
     }

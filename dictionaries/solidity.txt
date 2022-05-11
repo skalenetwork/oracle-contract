@@ -1,0 +1,5 @@
+solidityKeccak
+struct
+mload
+mstore
+staticcall

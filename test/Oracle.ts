@@ -24,17 +24,19 @@
  */
 
 import chaiAsPromised from "chai-as-promised";
-import chai = require("chai");
+import * as chai from "chai"
 import { OracleTester } from "../typechain";
 
 chai.should();
-chai.use((chaiAsPromised as any));
-
-import { deployOracle } from "./utils/deploy/oracle";
+chai.use((chaiAsPromised));
 
 import { ethers } from "hardhat";
 
-import { assert } from "chai";
+async function deployOracle() {
+    const factory = await ethers.getContractFactory("OracleTester");
+    const instance = await factory.deploy() as OracleTester;
+    return instance;
+}
 
 describe("Oracle", () => {
     let oracle: OracleTester;
@@ -43,20 +45,20 @@ describe("Oracle", () => {
         oracle = await deployOracle();
     })
 
-    describe("Negative tests", async () => {
+    describe("Negative tests", () => {
 
         it("should impossible to send response with incorrect data", async () => {
-            const cid: number = 1;
-            const uri: string = "https://www.binance.com/api/v3/time";
+            const cid = 1;
+            const uri = "https://www.binance.com/api/v3/time";
             const jsps: string[] = ["/serverTime"];
             const jspsNull: string[] = [];
             const jspsMany: string[] = ["/serverTime", "/serverTime2", "/serverTime3"];
             const trims: number[] = [4];
             const trimsNull: number[] = [];
             const trimsMany: number[] = [1, 2, 3];
-            const post: string = "wow_what_a_post_string";
-            const postNull: string = "";
-            const time: number = 1649253252000;
+            const post = "wow_what_a_post_string";
+            // const postNull = "";
+            const time = 1649253252000;
             const rslts: string[] = ["164925325"];
             const rsltsNull: string[] = [];
             const rsltsMany: string[] = ["164925325", "164928325", "164926325"];
@@ -222,9 +224,9 @@ describe("Oracle", () => {
         });
     });
 
-    describe("Manual example", async () => {
+    describe("Manual example", () => {
 
-        // Manual example responce
+        // Manual example response
         // {
         //     "cid":1234,
         //     "uri":"https://www.helloworld.com",
@@ -236,12 +238,12 @@ describe("Oracle", () => {
 
         const dataToSign = "{\"cid\":1234,\"uri\":\"https://www.helloworld.com\",\"jsps\":[\"/greetings\"],\"trims\":[0],\"time\":1649253252000,\"rslts\":[\"Hello_World\"],";
 
-        const cid: number = 1234;
-        const uri: string = "https://www.helloworld.com";
+        const cid = 1234;
+        const uri = "https://www.helloworld.com";
         const jsps: string[] = ["/greetings"];
         const trims: number[] = [0];
-        const post: string = "";
-        const time: number = 1649253252000;
+        const post = "";
+        const time = 1649253252000;
         const rslts: string[] = ["Hello_World"];
         const sigs: {v: number, r: string, s: string}[] = [];
 
@@ -259,7 +261,7 @@ describe("Oracle", () => {
 
             const dataByContract = await oracle.combineOracleResponse(oracleResponse);
 
-            assert(dataByContract.should.be.equal(dataToSign));
+            dataByContract.should.be.equal(dataToSign);
         });
 
         it("should verify oracle response", async () => {
@@ -271,10 +273,10 @@ describe("Oracle", () => {
 
             await oracle.setNumberOfNodes(4);
             const numberOfNodes = await oracle.getNumberOfNodesInSchain();
-            assert(numberOfNodes.should.be.equal(4));
+            numberOfNodes.should.be.equal(4);
 
             const countOfTrust = await oracle.getCountOfTrustNumber();
-            assert(countOfTrust.should.be.equal(2));
+            countOfTrust.should.be.equal(2);
 
             await oracle.setNodeAddress(wallet1.address);
             await oracle.setNodeAddress(wallet2.address);
@@ -286,10 +288,10 @@ describe("Oracle", () => {
             const nodeAddress3 = await oracle.nodeAddresses(2);
             const nodeAddress4 = await oracle.nodeAddresses(3);
 
-            assert(nodeAddress1.should.be.equal(wallet1.address));
-            assert(nodeAddress2.should.be.equal(wallet2.address));
-            assert(nodeAddress3.should.be.equal(wallet3.address));
-            assert(nodeAddress4.should.be.equal(wallet4.address));
+            nodeAddress1.should.be.equal(wallet1.address);
+            nodeAddress2.should.be.equal(wallet2.address);
+            nodeAddress3.should.be.equal(wallet3.address);
+            nodeAddress4.should.be.equal(wallet4.address);
 
             const signingKey1 = new ethers.utils.SigningKey(wallet1.privateKey);
             const signingKey2 = new ethers.utils.SigningKey(wallet2.privateKey);
@@ -341,9 +343,9 @@ describe("Oracle", () => {
             await oracle.setOracleResponse(oracleResponse);
 
             let res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
-            assert(res.should.be.equal(rslts[0]));
+            res.should.be.equal(rslts[0]);
 
-            rslts[0] = "Hellow_World2";
+            rslts[0] = "Hello_World2";
 
             oracleResponse.rslts = rslts;
 
@@ -381,7 +383,7 @@ describe("Oracle", () => {
             await oracle.setOracleResponse(oracleResponse);
 
             res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
-            assert(res.should.be.equal(rslts[0]));
+            res.should.be.equal(rslts[0]);
         });
 
         it("should not verify oracle response", async () => {
@@ -393,10 +395,10 @@ describe("Oracle", () => {
 
             await oracle.setNumberOfNodes(4);
             const numberOfNodes = await oracle.getNumberOfNodesInSchain();
-            assert(numberOfNodes.should.be.equal(4));
+            numberOfNodes.should.be.equal(4);
 
             const countOfTrust = await oracle.getCountOfTrustNumber();
-            assert(countOfTrust.should.be.equal(2));
+            countOfTrust.should.be.equal(2);
 
             await oracle.setNodeAddress(wallet1.address);
             await oracle.setNodeAddress(wallet2.address);
@@ -408,13 +410,13 @@ describe("Oracle", () => {
             const nodeAddress3 = await oracle.nodeAddresses(2);
             const nodeAddress4 = await oracle.nodeAddresses(3);
 
-            assert(nodeAddress1.should.be.equal(wallet1.address));
-            assert(nodeAddress2.should.be.equal(wallet2.address));
-            assert(nodeAddress3.should.be.equal(wallet3.address));
-            assert(nodeAddress4.should.be.equal(wallet4.address));
+            nodeAddress1.should.be.equal(wallet1.address);
+            nodeAddress2.should.be.equal(wallet2.address);
+            nodeAddress3.should.be.equal(wallet3.address);
+            nodeAddress4.should.be.equal(wallet4.address);
 
             const signingKey1 = new ethers.utils.SigningKey(wallet1.privateKey);
-            const signingKey2 = new ethers.utils.SigningKey(wallet2.privateKey);
+            // const signingKey2 = new ethers.utils.SigningKey(wallet2.privateKey);
             const signingKey3 = new ethers.utils.SigningKey(wallet3.privateKey);
             const signingKey4 = new ethers.utils.SigningKey(wallet4.privateKey);
 
@@ -433,7 +435,7 @@ describe("Oracle", () => {
             let digestHex = ethers.utils.hexlify(data);
 
             let signature1 = signingKey1.signDigest(digestHex);
-            let signature2 = signingKey2.signDigest(digestHex);
+            // let signature2 = signingKey2.signDigest(digestHex);
             let signature3 = signingKey3.signDigest(digestHex);
             let signature4 = signingKey4.signDigest(digestHex);
 
@@ -466,7 +468,7 @@ describe("Oracle", () => {
             digestHex = ethers.utils.hexlify(data);
 
             signature1 = signingKey1.signDigest(digestHex);
-            signature2 = signingKey2.signDigest(digestHex);
+            // signature2 = signingKey2.signDigest(digestHex);
             signature3 = signingKey3.signDigest(digestHex);
             signature4 = signingKey4.signDigest(digestHex);
 
@@ -501,14 +503,14 @@ describe("Oracle", () => {
             await oracle.setOracleResponse(oracleResponse);
 
             const res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
-            assert(res.should.be.equal(rslts[0]));
+            res.should.be.equal(rslts[0]);
         });
 
     });
 
-    describe("Manual example with post", async () => {
+    describe("Manual example with post", () => {
 
-        // Manual example with post responce
+        // Manual example with post response
         // {
         //     "cid":1234,
         //     "uri":"https://www.helloworld.com",
@@ -521,12 +523,12 @@ describe("Oracle", () => {
 
         const dataToSign = "{\"cid\":1234,\"uri\":\"https://www.helloworld.com\",\"jsps\":[\"/greetings\"],\"post\":\"/say_greetings\",\"time\":1649253252000,\"rslts\":[\"Hello_World\"],";
 
-        const cid: number = 1234;
-        const uri: string = "https://www.helloworld.com";
+        const cid = 1234;
+        const uri = "https://www.helloworld.com";
         const jsps: string[] = ["/greetings"];
         const trims: number[] = [];
-        const post: string = "/say_greetings";
-        const time: number = 1649253252000;
+        const post = "/say_greetings";
+        const time = 1649253252000;
         const rslts: string[] = ["Hello_World"];
         const sigs: {v: number, r: string, s: string}[] = [];
 
@@ -544,7 +546,7 @@ describe("Oracle", () => {
 
             const dataByContract = await oracle.combineOracleResponse(oracleResponse);
 
-            assert(dataByContract.should.be.equal(dataToSign));
+            dataByContract.should.be.equal(dataToSign);
         });
 
         it("should verify oracle response", async () => {
@@ -556,10 +558,10 @@ describe("Oracle", () => {
 
             await oracle.setNumberOfNodes(4);
             const numberOfNodes = await oracle.getNumberOfNodesInSchain();
-            assert(numberOfNodes.should.be.equal(4));
+            numberOfNodes.should.be.equal(4);
 
             const countOfTrust = await oracle.getCountOfTrustNumber();
-            assert(countOfTrust.should.be.equal(2));
+            countOfTrust.should.be.equal(2);
 
             await oracle.setNodeAddress(wallet1.address);
             await oracle.setNodeAddress(wallet2.address);
@@ -571,10 +573,10 @@ describe("Oracle", () => {
             const nodeAddress3 = await oracle.nodeAddresses(2);
             const nodeAddress4 = await oracle.nodeAddresses(3);
 
-            assert(nodeAddress1.should.be.equal(wallet1.address));
-            assert(nodeAddress2.should.be.equal(wallet2.address));
-            assert(nodeAddress3.should.be.equal(wallet3.address));
-            assert(nodeAddress4.should.be.equal(wallet4.address));
+            nodeAddress1.should.be.equal(wallet1.address);
+            nodeAddress2.should.be.equal(wallet2.address);
+            nodeAddress3.should.be.equal(wallet3.address);
+            nodeAddress4.should.be.equal(wallet4.address);
 
             const signingKey1 = new ethers.utils.SigningKey(wallet1.privateKey);
             const signingKey2 = new ethers.utils.SigningKey(wallet2.privateKey);
@@ -626,9 +628,9 @@ describe("Oracle", () => {
             await oracle.setOracleResponse(oracleResponse);
 
             let res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
-            assert(res.should.be.equal(rslts[0]));
+            res.should.be.equal(rslts[0]);
 
-            rslts[0] = "Hellow_World2";
+            rslts[0] = "Hello_World2";
 
             oracleResponse.rslts = rslts;
 
@@ -666,7 +668,7 @@ describe("Oracle", () => {
             await oracle.setOracleResponse(oracleResponse);
 
             res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
-            assert(res.should.be.equal(rslts[0]));
+            res.should.be.equal(rslts[0]);
         });
 
         it("should not verify oracle response", async () => {
@@ -678,10 +680,10 @@ describe("Oracle", () => {
 
             await oracle.setNumberOfNodes(4);
             const numberOfNodes = await oracle.getNumberOfNodesInSchain();
-            assert(numberOfNodes.should.be.equal(4));
+            numberOfNodes.should.be.equal(4);
 
             const countOfTrust = await oracle.getCountOfTrustNumber();
-            assert(countOfTrust.should.be.equal(2));
+            countOfTrust.should.be.equal(2);
 
             await oracle.setNodeAddress(wallet1.address);
             await oracle.setNodeAddress(wallet2.address);
@@ -693,13 +695,13 @@ describe("Oracle", () => {
             const nodeAddress3 = await oracle.nodeAddresses(2);
             const nodeAddress4 = await oracle.nodeAddresses(3);
 
-            assert(nodeAddress1.should.be.equal(wallet1.address));
-            assert(nodeAddress2.should.be.equal(wallet2.address));
-            assert(nodeAddress3.should.be.equal(wallet3.address));
-            assert(nodeAddress4.should.be.equal(wallet4.address));
+            nodeAddress1.should.be.equal(wallet1.address);
+            nodeAddress2.should.be.equal(wallet2.address);
+            nodeAddress3.should.be.equal(wallet3.address);
+            nodeAddress4.should.be.equal(wallet4.address);
 
             const signingKey1 = new ethers.utils.SigningKey(wallet1.privateKey);
-            const signingKey2 = new ethers.utils.SigningKey(wallet2.privateKey);
+            // const signingKey2 = new ethers.utils.SigningKey(wallet2.privateKey);
             const signingKey3 = new ethers.utils.SigningKey(wallet3.privateKey);
             const signingKey4 = new ethers.utils.SigningKey(wallet4.privateKey);
 
@@ -718,7 +720,7 @@ describe("Oracle", () => {
             let digestHex = ethers.utils.hexlify(data);
 
             let signature1 = signingKey1.signDigest(digestHex);
-            let signature2 = signingKey2.signDigest(digestHex);
+            // let signature2 = signingKey2.signDigest(digestHex);
             let signature3 = signingKey3.signDigest(digestHex);
             let signature4 = signingKey4.signDigest(digestHex);
 
@@ -751,7 +753,7 @@ describe("Oracle", () => {
             digestHex = ethers.utils.hexlify(data);
 
             signature1 = signingKey1.signDigest(digestHex);
-            signature2 = signingKey2.signDigest(digestHex);
+            // signature2 = signingKey2.signDigest(digestHex);
             signature3 = signingKey3.signDigest(digestHex);
             signature4 = signingKey4.signDigest(digestHex);
 
@@ -786,14 +788,14 @@ describe("Oracle", () => {
             await oracle.setOracleResponse(oracleResponse);
 
             const res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
-            assert(res.should.be.equal(rslts[0]));
+            res.should.be.equal(rslts[0]);
         });
 
     });
 
-    describe("Time example", async () => {
+    describe("Time example", () => {
 
-        // Time example responce
+        // Time example response
         // {
         //     "cid":1,
         //     "uri":"http://worldtimeapi.org/api/timezone/Europe/Kiev",
@@ -811,12 +813,12 @@ describe("Oracle", () => {
 
         const dataToSign = "{\"cid\":1,\"uri\":\"http://worldtimeapi.org/api/timezone/Europe/Kiev\",\"jsps\":[\"/unixtime\",\"/day_of_year\"],\"trims\":[4,0],\"time\":1649716742000,\"rslts\":[\"164971\",\"102\"],";
 
-        const cid: number = 1;
-        const uri: string = "http://worldtimeapi.org/api/timezone/Europe/Kiev";
+        const cid = 1;
+        const uri = "http://worldtimeapi.org/api/timezone/Europe/Kiev";
         const jsps: string[] = ["/unixtime","/day_of_year"];
         const trims: number[] = [4,0];
-        const post: string = "";
-        const time: number = 1649716742000;
+        const post = "";
+        const time = 1649716742000;
         const rslts: string[] = ["164971", "102"];
         const sigs: {v: number, r: string, s: string}[] = [
             {
@@ -840,10 +842,10 @@ describe("Oracle", () => {
                 s: "0x0000000000000000000000000000000000000000000000000000000000000000",
             }
         ];
-        const nodePublicKeyInSchain1: string = "0x04cef9675d6bde53c4a6acf6f9b627eef98aa6db63fab81e8f7047b1aae2071b9c2d54675ed5042a7d819142d19fff4b87309c177f28fc27144f2eb0b30d806eb5";
-        const nodePublicKeyInSchain2: string = "0x04e3b423463f38ec5a2310c05546d0f629e1e2bd0177ecdecf4860a477e054dcd3bd98c258f7d8cbbab02548a966d59274473e1ad32075ba5d3073be24803d46dc";
-        const nodePublicKeyInSchain3: string = "0x043f3a2fcd4eff3f1df8a86b8c86410353c6899128a7659046d3bb8dba80853bd73445513becf4601b50c45611fc4edd954994d5e6bf308ee0767b7102200bd252";
-        const nodePublicKeyInSchain4: string = "0x04edb47dbc4737489d66ef6a816b67828c4f6ae28427e6a267aa04db576ebe628d976a3e45ba3705571d8e59637d1cc9ada855218a99ce12df845c5bcfc21aa958";
+        const nodePublicKeyInSchain1 = "0x04cef9675d6bde53c4a6acf6f9b627eef98aa6db63fab81e8f7047b1aae2071b9c2d54675ed5042a7d819142d19fff4b87309c177f28fc27144f2eb0b30d806eb5";
+        const nodePublicKeyInSchain2 = "0x04e3b423463f38ec5a2310c05546d0f629e1e2bd0177ecdecf4860a477e054dcd3bd98c258f7d8cbbab02548a966d59274473e1ad32075ba5d3073be24803d46dc";
+        const nodePublicKeyInSchain3 = "0x043f3a2fcd4eff3f1df8a86b8c86410353c6899128a7659046d3bb8dba80853bd73445513becf4601b50c45611fc4edd954994d5e6bf308ee0767b7102200bd252";
+        const nodePublicKeyInSchain4 = "0x04edb47dbc4737489d66ef6a816b67828c4f6ae28427e6a267aa04db576ebe628d976a3e45ba3705571d8e59637d1cc9ada855218a99ce12df845c5bcfc21aa958";
 
         it("should create a JSON string to sign", async () => {
             const oracleResponse = {
@@ -859,17 +861,17 @@ describe("Oracle", () => {
 
             const dataByContract = await oracle.combineOracleResponse(oracleResponse);
 
-            assert(dataByContract.should.be.equal(dataToSign));
+            dataByContract.should.be.equal(dataToSign);
         });
 
         it("should verify oracle response", async () => {
 
             await oracle.setNumberOfNodes(4);
             const numberOfNodes = await oracle.getNumberOfNodesInSchain();
-            assert(numberOfNodes.should.be.equal(4));
+            numberOfNodes.should.be.equal(4);
 
             const countOfTrust = await oracle.getCountOfTrustNumber();
-            assert(countOfTrust.should.be.equal(2));
+            countOfTrust.should.be.equal(2);
 
             const nodeAddressInSchain1: string = ethers.utils.computeAddress(nodePublicKeyInSchain1);
             const nodeAddressInSchain2: string = ethers.utils.computeAddress(nodePublicKeyInSchain2);
@@ -886,10 +888,10 @@ describe("Oracle", () => {
             const nodeAddress3 = await oracle.nodeAddresses(2);
             const nodeAddress4 = await oracle.nodeAddresses(3);
 
-            assert(nodeAddress1.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain1)));
-            assert(nodeAddress2.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain2)));
-            assert(nodeAddress3.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain3)));
-            assert(nodeAddress4.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain4)));
+            nodeAddress1.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain1));
+            nodeAddress2.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain2));
+            nodeAddress3.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain3));
+            nodeAddress4.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain4));
 
             const oracleResponse = {
                 cid,
@@ -905,13 +907,13 @@ describe("Oracle", () => {
             await oracle.setOracleResponse(oracleResponse);
 
             const res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
-            assert(res.should.be.equal(rslts[0]));
+            res.should.be.equal(rslts[0]);
         });
     });
 
-    describe("Binance example", async () => {
+    describe("Binance example", () => {
 
-        // Binance example responce
+        // Binance example response
         // {
         //     "cid":1,
         //     "uri":"https://www.binance.com/api/v3/time",
@@ -929,12 +931,12 @@ describe("Oracle", () => {
 
         const dataToSign = "{\"cid\":1,\"uri\":\"https://www.binance.com/api/v3/time\",\"jsps\":[\"/serverTime\"],\"trims\":[4],\"time\":1649716768000,\"rslts\":[\"164971676\"],";
 
-        const cid: number = 1;
-        const uri: string = "https://www.binance.com/api/v3/time";
+        const cid = 1;
+        const uri = "https://www.binance.com/api/v3/time";
         const jsps: string[] = ["/serverTime"];
         const trims: number[] = [4];
-        const post: string = "";
-        const time: number = 1649716768000;
+        const post = "";
+        const time = 1649716768000;
         const rslts: string[] = ["164971676"];
         const sigs: {v: number, r: string, s: string}[] = [
             {
@@ -959,10 +961,10 @@ describe("Oracle", () => {
             },
         ];
 
-        const nodePublicKeyInSchain1: string = "0x04cef9675d6bde53c4a6acf6f9b627eef98aa6db63fab81e8f7047b1aae2071b9c2d54675ed5042a7d819142d19fff4b87309c177f28fc27144f2eb0b30d806eb5";
-        const nodePublicKeyInSchain2: string = "0x04e3b423463f38ec5a2310c05546d0f629e1e2bd0177ecdecf4860a477e054dcd3bd98c258f7d8cbbab02548a966d59274473e1ad32075ba5d3073be24803d46dc";
-        const nodePublicKeyInSchain3: string = "0x043f3a2fcd4eff3f1df8a86b8c86410353c6899128a7659046d3bb8dba80853bd73445513becf4601b50c45611fc4edd954994d5e6bf308ee0767b7102200bd252";
-        const nodePublicKeyInSchain4: string = "0x04edb47dbc4737489d66ef6a816b67828c4f6ae28427e6a267aa04db576ebe628d976a3e45ba3705571d8e59637d1cc9ada855218a99ce12df845c5bcfc21aa958";
+        const nodePublicKeyInSchain1 = "0x04cef9675d6bde53c4a6acf6f9b627eef98aa6db63fab81e8f7047b1aae2071b9c2d54675ed5042a7d819142d19fff4b87309c177f28fc27144f2eb0b30d806eb5";
+        const nodePublicKeyInSchain2 = "0x04e3b423463f38ec5a2310c05546d0f629e1e2bd0177ecdecf4860a477e054dcd3bd98c258f7d8cbbab02548a966d59274473e1ad32075ba5d3073be24803d46dc";
+        const nodePublicKeyInSchain3 = "0x043f3a2fcd4eff3f1df8a86b8c86410353c6899128a7659046d3bb8dba80853bd73445513becf4601b50c45611fc4edd954994d5e6bf308ee0767b7102200bd252";
+        const nodePublicKeyInSchain4 = "0x04edb47dbc4737489d66ef6a816b67828c4f6ae28427e6a267aa04db576ebe628d976a3e45ba3705571d8e59637d1cc9ada855218a99ce12df845c5bcfc21aa958";
 
         it("should create a JSON string to sign", async () => {
             const oracleResponse = {
@@ -978,17 +980,17 @@ describe("Oracle", () => {
 
             const dataByContract = await oracle.combineOracleResponse(oracleResponse);
 
-            assert(dataByContract.should.be.equal(dataToSign));
+            dataByContract.should.be.equal(dataToSign);
         });
 
         it("should verify oracle response", async () => {
 
             await oracle.setNumberOfNodes(4);
             const numberOfNodes = await oracle.getNumberOfNodesInSchain();
-            assert(numberOfNodes.should.be.equal(4));
+            numberOfNodes.should.be.equal(4);
 
             const countOfTrust = await oracle.getCountOfTrustNumber();
-            assert(countOfTrust.should.be.equal(2));
+            countOfTrust.should.be.equal(2);
 
             const nodeAddressInSchain1: string = ethers.utils.computeAddress(nodePublicKeyInSchain1);
             const nodeAddressInSchain2: string = ethers.utils.computeAddress(nodePublicKeyInSchain2);
@@ -1005,10 +1007,10 @@ describe("Oracle", () => {
             const nodeAddress3 = await oracle.nodeAddresses(2);
             const nodeAddress4 = await oracle.nodeAddresses(3);
 
-            assert(nodeAddress1.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain1)));
-            assert(nodeAddress2.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain2)));
-            assert(nodeAddress3.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain3)));
-            assert(nodeAddress4.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain4)));
+            nodeAddress1.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain1));
+            nodeAddress2.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain2));
+            nodeAddress3.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain3));
+            nodeAddress4.should.be.equal(ethers.utils.getAddress(nodeAddressInSchain4));
 
             const oracleResponse = {
                 cid,
@@ -1024,7 +1026,7 @@ describe("Oracle", () => {
             await oracle.setOracleResponse(oracleResponse);
 
             const res = await oracle.data(ethers.utils.id(uri + jsps[0] + post));
-            assert(res.should.be.equal(rslts[0]));
+            res.should.be.equal(rslts[0]);
         });
 
     });

@@ -1,10 +1,7 @@
 import { Interface } from "ethers/lib/utils";
 
-export function getAbi(contractInterface: Interface | undefined) {
-    if (!contractInterface) {
-        return undefined;
-    }
-    const abi = JSON.parse(contractInterface.format("json") as string);
+export function getAbi(contractInterface: Interface) {
+    const abi = JSON.parse(contractInterface.format("json") as string) as [];
 
     abi.forEach((obj: {type: string}) => {
         if (obj.type === "function") {
