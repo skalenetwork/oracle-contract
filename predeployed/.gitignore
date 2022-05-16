@@ -1,0 +1,6 @@
+__pycache__
+src/oracle_predeployed/artifacts/*
+!src/oracle_predeployed/artifacts/.keep
+test/venv
+version.txt
+*.egg-info/

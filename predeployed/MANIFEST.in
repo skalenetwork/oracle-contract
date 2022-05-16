@@ -1,0 +1,3 @@
+graft src/oracle_predeployed/artifacts
+include src/oracle_predeployed/py.typed
+include version.txt
