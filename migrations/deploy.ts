@@ -38,13 +38,13 @@ async function main() {
         console.log("Oracle deployed at address", oracle.address);
     } else if (!production && upgradeable) {
         console.log("Deploy Oracle Upgradeable Tester");
-        const oracleUpgradeableTesterFactory = await (await ethers.getContractFactory("OracleUpgradeableTester"));
+        const oracleUpgradeableTesterFactory = await ethers.getContractFactory("OracleUpgradeableTester");
         oracle = (await upgrades.deployProxy(oracleUpgradeableTesterFactory));
         await oracle.deployTransaction.wait();
         console.log("Oracle deployed at address", oracle.address);
     } else {
         console.log("Deploy Oracle Upgradeable");
-        const oracleUpgradeableFactory = await (await ethers.getContractFactory("OracleUpgradeable"));
+        const oracleUpgradeableFactory = await ethers.getContractFactory("OracleUpgradeable");
         oracle = (await upgrades.deployProxy(oracleUpgradeableFactory));
         await oracle.deployTransaction.wait();
         console.log("Oracle deployed at address", oracle.address);

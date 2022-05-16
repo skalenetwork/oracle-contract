@@ -9,6 +9,7 @@ import "./interfaces/IOracleUpgradeable.sol";
 
 contract OracleUpgradeable is Verifier, OracleJson, IOracleUpgradeable, Initializable {
 
+    // solhint-disable-next-line no-empty-blocks
     function initialize() external initializer override {}
 
     function verifyOracleResponse(OracleResponse memory response) public view override returns (bool) {
