@@ -29,10 +29,12 @@ async function main() {
     if (!production && !upgradeable) {
         console.log("Deploy Oracle Tester");
         oracle = await (await ethers.getContractFactory("OracleTester")).deploy();
+        await oracle.deployTransaction.wait();
         console.log("Oracle Tester deployed at address", oracle.address);
     } else if (production && !upgradeable) {
         console.log("Deploy Oracle");
         oracle = await (await ethers.getContractFactory("Oracle")).deploy();
+        await oracle.deployTransaction.wait();
         console.log("Oracle deployed at address", oracle.address);
     } else if (!production && upgradeable) {
         console.log("Deploy Oracle Upgradeable Tester");
