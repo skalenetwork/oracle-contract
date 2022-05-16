@@ -25,7 +25,7 @@
 
 import chaiAsPromised from "chai-as-promised";
 import * as chai from "chai"
-import { OracleTester } from "../typechain";
+import { OracleTester, OracleUpgradeableTester } from "../typechain";
 
 chai.should();
 chai.use((chaiAsPromised));
@@ -33,16 +33,20 @@ chai.use((chaiAsPromised));
 import { ethers } from "hardhat";
 
 async function deployOracle() {
-    const factory = await ethers.getContractFactory("OracleTester");
-    const instance = await factory.deploy() as OracleTester;
-    return instance;
+    return await (await ethers.getContractFactory("OracleTester")).deploy() as OracleTester;
 }
 
-describe("Oracle", () => {
-    let oracle: OracleTester;
+async function deployOracleUpgradeable() {
+    const oracleUpgradeableTester = await (await ethers.getContractFactory("OracleUpgradeableTester")).deploy() as OracleUpgradeableTester;
+    await oracleUpgradeableTester.initialize();
+    return oracleUpgradeableTester;
+}
+
+function testOracle(deploy: () => Promise<OracleTester | OracleUpgradeableTester>) {
+    let oracle: OracleTester | OracleUpgradeableTester;
 
     beforeEach(async () => {
-        oracle = await deployOracle();
+        oracle = await deploy();
     })
 
     describe("Negative tests", () => {
@@ -1031,4 +1035,13 @@ describe("Oracle", () => {
 
     });
 
+}
+
+
+describe("Oracle", () => {
+    testOracle(deployOracle);
+});
+
+describe("OracleUpgradeable", () => {
+    testOracle(deployOracleUpgradeable);
 });

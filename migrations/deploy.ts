@@ -1,5 +1,5 @@
 import { promises as fs } from 'fs';
-import { ethers, network } from "hardhat";
+import { ethers, upgrades, network } from "hardhat";
 import { getAbi } from './tools/abi';
 import { Contract } from 'ethers';
 
@@ -11,6 +11,7 @@ export function getContractKeyInAbiFile(contract: string) {
 async function main() {
 
     let production = false;
+    let upgradeable = false;
 
     if (process.env.PRODUCTION === "true") {
         production = true;
@@ -18,14 +19,32 @@ async function main() {
         production = false;
     }
 
+    if (process.env.UPGRADEABLE === "true") {
+        upgradeable = true;
+    } else if (process.env.UPGRADEABLE === "false") {
+        upgradeable = false;
+    }
+
     let oracle: Contract;
-    if (!production) {
+    if (!production && !upgradeable) {
         console.log("Deploy Oracle Tester");
         oracle = await (await ethers.getContractFactory("OracleTester")).deploy();
         console.log("Oracle Tester deployed at address", oracle.address);
-    } else {
+    } else if (production && !upgradeable) {
         console.log("Deploy Oracle");
         oracle = await (await ethers.getContractFactory("Oracle")).deploy();
+        console.log("Oracle deployed at address", oracle.address);
+    } else if (!production && upgradeable) {
+        console.log("Deploy Oracle Upgradeable Tester");
+        const oracleUpgradeableTesterFactory = await (await ethers.getContractFactory("OracleUpgradeableTester"));
+        oracle = (await upgrades.deployProxy(oracleUpgradeableTesterFactory));
+        await oracle.deployTransaction.wait();
+        console.log("Oracle deployed at address", oracle.address);
+    } else {
+        console.log("Deploy Oracle Upgradeable");
+        const oracleUpgradeableFactory = await (await ethers.getContractFactory("OracleUpgradeable"));
+        oracle = (await upgrades.deployProxy(oracleUpgradeableFactory));
+        await oracle.deployTransaction.wait();
         console.log("Oracle deployed at address", oracle.address);
     }
 
