@@ -1,0 +1,120 @@
+name: Publish
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - develop
+      - beta
+      - stable
+
+env:
+  NODE_VERSION: 16
+  PYTHON_VERSION: 3.9
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged    
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+
+    - uses: actions/cache@v2
+      id: yarn-cache
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+
+    - uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    - name: Install NODE JS
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        registry-url: 'https://registry.npmjs.org'
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Install building tools
+      run: pip3 install -r ./predeployed/scripts/requirements.txt
+
+    - name: Install project
+      run: yarn install
+
+    - name: Determine version
+      run: |
+        export BRANCH=${GITHUB_REF##*/}
+        echo "BRANCH=$BRANCH" >> $GITHUB_ENV
+        echo "Branch $BRANCH"
+        export VERSION=$(bash ./predeployed/scripts/calculate_version.sh)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "Version $VERSION"
+        ( test $BRANCH = "stable" && export PRERELEASE=false ) || export PRERELEASE=true
+        echo "PRERELEASE=$PRERELEASE" >> $GITHUB_ENV
+
+    - name: Build pip package
+      env:
+          VERSION: ${{ env.VERSION }}
+      run: predeployed/scripts/build_package.sh
+
+    - name: Publish pip package
+      env:
+        PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+      run: predeployed/scripts/publish_package.sh
+
+    - name: Publish interfaces npm package
+      env:
+        BRANCH: ${{ env.BRANCH }}
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: ./interfaces/publish_package.sh
+
+    - name: Generate ABI
+      env:
+        VERSION: ${{ env.VERSION }}
+      run: |
+        pip install predeployed/dist/*.whl
+        ./predeployed/scripts/generate_abi.py > data/oracle-$VERSION-abi.json
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ env.VERSION }}
+        release_name: ${{ env.VERSION }}
+        draft: false
+        prerelease: ${{ env.PRERELEASE }}
+    
+    - name: Upload Release Assets
+      id: upload-release-assets
+      uses: dwenegar/upload-release-assets@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        release_id: ${{ steps.create_release.outputs.id }}
+        assets_path: predeployed/dist/
+
+    - name: Upload ABI
+      id: upload-abi
+      uses: dwenegar/upload-release-assets@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        release_id: ${{ steps.create_release.outputs.id }}
+        assets_path: data/*.json

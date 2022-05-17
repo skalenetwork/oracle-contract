@@ -1,4 +1,4 @@
-'''Module for generaration of Oracle predeployed smart contract'''
+'''Module for generation of Oracle predeployed smart contract'''
 
 from os.path import dirname, join
 from typing import Dict
@@ -14,7 +14,7 @@ class OracleGenerator(ContractGenerator):
     ARTIFACT_FILENAME = 'Oracle.json'
 
     # ---------- storage ----------
-    # ----------Etherbase----------
+    # ----------Oracle----------
 
     def __init__(self):
         generator = OracleGenerator.from_hardhat_artifact(join(
