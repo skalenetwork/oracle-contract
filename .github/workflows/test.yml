@@ -55,10 +55,10 @@ jobs:
       run: slither --version
 
     - name: Lint
-      run: yarn fullCheck
+      run: yarn fullcheck
 
-    - name: Test deploy
-      run: ./scripts/test_deploy.sh
+    # - name: Test deploy
+    #   run: ./scripts/test_deploy.sh
 
     - name: Run tests
       run: npx hardhat coverage
