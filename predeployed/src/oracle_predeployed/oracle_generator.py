@@ -23,7 +23,7 @@ class OracleGenerator(ContractGenerator):
         super().__init__(bytecode=generator.bytecode, abi=generator.abi)
 
     @classmethod
-    def generate_storage(cls) -> Dict[str, str]:
+    def generate_storage(cls, **_) -> Dict[str, str]:
         '''Generate contract storage
         '''
         storage: Dict[str, str] = {}
