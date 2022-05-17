@@ -2,7 +2,6 @@
 
 from os.path import dirname, join
 from typing import Dict
-from web3.auto import w3
 
 from predeployed_generator.contract_generator import ContractGenerator
 
@@ -24,7 +23,7 @@ class OracleGenerator(ContractGenerator):
         super().__init__(bytecode=generator.bytecode, abi=generator.abi)
 
     @classmethod
-    def generate_storage(cls, **kwargs) -> Dict[str, str]:
+    def generate_storage(cls) -> Dict[str, str]:
         '''Generate contract storage
         '''
         storage: Dict[str, str] = {}
