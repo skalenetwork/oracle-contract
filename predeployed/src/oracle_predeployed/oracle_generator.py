@@ -4,7 +4,7 @@ from os.path import dirname, join
 from typing import Dict
 from web3.auto import w3
 
-from predeployed_generator import ContractGenerator
+from predeployed_generator.contract_generator import ContractGenerator
 
 
 class OracleGenerator(ContractGenerator):
@@ -14,7 +14,7 @@ class OracleGenerator(ContractGenerator):
     ARTIFACT_FILENAME = 'Oracle.json'
 
     # ---------- storage ----------
-    # ----------Oracle----------
+    # ---------- Oracle -----------
 
     def __init__(self):
         generator = OracleGenerator.from_hardhat_artifact(join(

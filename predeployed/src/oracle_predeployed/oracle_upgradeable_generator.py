@@ -15,7 +15,7 @@ class OracleUpgradeableGenerator(OracleGenerator):
     # --------------- storage ---------------
     # ------------ Initializable ------------
     # 0:    _initialized, _initializing
-    # --------- OracleUpgradeable ---------
+    # ---------- OracleUpgradeable ----------
 
 
     INITIALIZED_SLOT = 0
