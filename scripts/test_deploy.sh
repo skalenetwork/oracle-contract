@@ -4,8 +4,10 @@ set -e
 
 npx ganache-cli --gasLimit 8000000 --quiet &
 
-MODE=FIXED npx hardhat run migrations/deploy.ts
-MODE=UPGRADEABLE npx hardhat run migrations/deploy.ts
+PRODUCTION=false UPGRADEABLE=false npx hardhat run migrations/deploy.ts
+PRODUCTION=false UPGRADEABLE=true npx hardhat run migrations/deploy.ts
+PRODUCTION=true UPGRADEABLE=false npx hardhat run migrations/deploy.ts
+PRODUCTION=true UPGRADEABLE=true npx hardhat run migrations/deploy.ts
 
 npx kill-port 8545
 
