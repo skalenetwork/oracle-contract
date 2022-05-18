@@ -25,15 +25,6 @@ class OracleUpgradeableGenerator(OracleGenerator):
     @classmethod
     def generate_storage(cls, **kwargs) -> Dict[str, str]:
         '''Generate smart contract storage.
-
-        Arguments:
-            - schain_owner
-
-        Returns an object in format:
-        {
-            "0x00": "0x5",
-            "0x01": "0x13"
-        }
         '''
 
         storage = super().generate_storage(**kwargs)
