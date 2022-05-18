@@ -25,4 +25,8 @@ class TestUpgradeableOracleGenerator(TestSolidityProject):
                 self.PROXY_ADMIN_ADDRESS,
                 owner_address=self.OWNER_ADDRESS)
             })
+
+    def test(self, tmpdir):
+        self.datadir = tmpdir
+        genesis = self.prepare_genesis()
     

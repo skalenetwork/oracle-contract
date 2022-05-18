@@ -15,4 +15,8 @@ class TestOracleGenerator(TestSolidityProject):
         oracle_generator = OracleGenerator()
 
         return self.generate_genesis(oracle_generator.generate_allocation(ORACLE_ADDRESS))
+
+    def test(self, tmpdir):
+        self.datadir = tmpdir
+        genesis = self.prepare_genesis()
     
