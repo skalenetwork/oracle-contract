@@ -16,7 +16,7 @@ Oracle-contract is a predeployed smart-contract set running on each SKALE Chain 
     "post": "/time_answer",
     "time": 1642521456593,
     "rslts": [ "164252145", "1", null ],
-    "sigs":[
+    "sigs": [
         "0:fd4dde03a49aa83dcad8fe4e1e3e7b51e827c35d0339b047c71dd2a5673ac844:695b94e047f7310143a238d8b61f22ea60dcc3960d897d6dc57f212b91efe6f1",
         "0:fd4dde03a49aa83dcad8fe4e1e3e7b51e827c35d0339b047c71dd2a5673ac845:695b94e047f7310143a238d8b61f22ea60dcc3960d897d6dc57f212b91efe6f1",
         "0:fd4dde03a49aa83dcad8fe4e1e3e7b51e827c35d0339b047c71dd2a5673ac846:695b94e047f7310143a238d8b61f22ea60dcc3960d897d6dc57f212b91efe6f2",
