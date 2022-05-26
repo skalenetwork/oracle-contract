@@ -100,7 +100,7 @@ yarn deploy-upgradeable --network custom
 yarn deploy-production --network custom
 ```
 
--   deploy production upgradeabl version to custom network:
+-   deploy production upgradeable version to custom network:
 
 ```bash
 yarn deploy-production-upgradeable --network custom
