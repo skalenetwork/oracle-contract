@@ -3,7 +3,7 @@ Predeployed contract to verify Oracle responses
 
 ## Description
 
-Oracle-contract is a predeployed smart-contract set running on each SKALE Chain which can verify Oracle[https://github.com/skalenetwork/skale-consensus/tree/develop/oracle] responses.
+Oracle-contract is a predeployed smart-contract set running on each SKALE Chain which can verify [Oracle](https://github.com/skalenetwork/skale-consensus/tree/develop/oracle) responses.
 
 ### Response structure
 
@@ -140,4 +140,4 @@ contract VerifyOracleResponses {
 
 ### Python Oracle usage
 
-To see how to send Oracle request and get Oracle responses please go to oracle-demo[https://github.com/skalenetwork/oracle-demo]
+To see how to send Oracle request and get Oracle responses please go to [oracle-demo](https://github.com/skalenetwork/oracle-demo)
