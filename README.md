@@ -60,11 +60,13 @@ Combined to string:
 {"cid":1,"uri":"http://worldtimeapi.org/api/timezone/Europe/Kiev","jsps":["/unixtime","/day_of_year","/xxx"],"trims":[1,1,1],"post":"/time_answer","time": 1642521456593,"rslts":["164252145","1",null],
 ```
 
-If n - t + 1 ECDSA signatures provided - Oracle response is signed
+If `n - t + 1` ECDSA signatures provided - Oracle response is signed
 
 where:
+
 n - number of nodes in SKALE chain
-t - threshold number for BLS signature ( 2/3n + 1 )
+
+t - threshold number for BLS signature ( `2/3n + 1` )
 
 ## Install
 
