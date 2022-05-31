@@ -19,8 +19,6 @@ class OracleUpgradeableGenerator(OracleGenerator):
 
 
     INITIALIZED_SLOT = 0
-    ROLES_SLOT = 101
-    ROLE_MEMBERS_SLOT = 151
 
     @classmethod
     def generate_storage(cls, **kwargs) -> Dict[str, str]:

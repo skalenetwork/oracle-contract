@@ -84,28 +84,28 @@ PRIVATE_KEY="your private key for mainnet"
 GASPRICE="preferred gas price (optional param)" 
 ```
 
--   deploy test version to custom network:
+-   deploy production upgradeable version to custom network:
 
 ```bash
 yarn deploy --network custom
 ```
 
--   deploy test upgradeable version to custom network:
+-   deploy production not upgradeable version to custom network:
 
 ```bash
-yarn deploy-upgradeable --network custom
+yarn deploy-not-upgradeable --network custom
 ```
 
--   deploy production version to custom network:
+-   deploy test version to custom network:
 
 ```bash
-yarn deploy-production --network custom
+yarn deploy-test --network custom
 ```
 
--   deploy production upgradeable version to custom network:
+-   deploy test not upgradeable version to custom network:
 
 ```bash
-yarn deploy-production-upgradeable --network custom
+yarn deploy-test-not-upgradeable --network custom
 ```
 
 ## Test

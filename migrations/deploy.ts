@@ -1,17 +1,13 @@
 import { promises as fs } from 'fs';
 import { ethers, upgrades, network } from "hardhat";
-import { getAbi } from './tools/abi';
 import { Contract } from 'ethers';
 
-
-export function getContractKeyInAbiFile(contract: string) {
-    return contract.replace(/([a-zA-Z])(?=[A-Z])/g, '$1_').toLowerCase();
-}
+import { getAbi, getContractKeyInAbiFile } from "@skalenetwork/upgrade-tools";
 
 async function main() {
 
-    let production = false;
-    let upgradeable = false;
+    let production = true;
+    let upgradeable = true;
 
     if (process.env.PRODUCTION === "true") {
         production = true;
