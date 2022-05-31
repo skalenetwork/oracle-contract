@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: AGPL-3.0
 pragma solidity 0.8.13;
 
+import "@openzeppelin/contracts/utils/Address.sol";
+
 contract ReaderFromConfig {
+
     uint256 public constant FREE_MEM_PTR = 0x40;
-    uint256 public constant FN_NUM_GET_CONFIG_VARIABLE_UINT256 = 0x13;
-    uint256 public constant FN_NUM_GET_CONFIG_VARIABLE_ADDRESS = 0x14;
-    uint256 public constant FN_NUM_GET_CONFIG_VARIABLE_STRING = 0x15;
+    address public constant FN_NUM_GET_CONFIG_VARIABLE_UINT256 = 0x0000000000000000000000000000000000000013;
+    address public constant FN_NUM_GET_CONFIG_VARIABLE_ADDRESS = 0x0000000000000000000000000000000000000014;
+    address public constant FN_NUM_GET_CONFIG_VARIABLE_STRING = 0x0000000000000000000000000000000000000015;
 
     /**
      * @dev Get uint256 value from the skaled config.
@@ -15,23 +18,13 @@ contract ReaderFromConfig {
     )
         internal
         view
-        returns ( uint256 rv )
+        returns (uint256)
     {
-        uint256 fmp = FREE_MEM_PTR;
-        uint256 blocks = (bytes(strConfigVariableName).length + 31) / 32 + 1;
-        bool success;
-        // solhint-disable-next-line no-inline-assembly
-        assembly {
-            let ptr := mload(fmp)
-            for { let i := 0 } lt( i, blocks ) { i := add(1, i) } {
-                let where := add(ptr, mul(32, i))
-                let what := mload(add(strConfigVariableName, mul(32, i)))
-                mstore(where, what)
-            }
-            success := staticcall(not(0), FN_NUM_GET_CONFIG_VARIABLE_UINT256, ptr, mul( blocks, 32 ), ptr, 32)
-            rv := mload(ptr)
-        }
+        (bool success, bytes memory answer) = FN_NUM_GET_CONFIG_VARIABLE_UINT256.staticcall(
+            bytes(strConfigVariableName)
+        );
         require(success, "Get config uint256 failed");
+        return uint256(bytes32(_bytesToBytes32(answer)));
     }
 
     function _getConfigVariableString(
@@ -39,29 +32,13 @@ contract ReaderFromConfig {
     )
         internal
         view
-        returns ( string memory rv )
+        returns (string memory)
     {
-        uint256 fmp = FREE_MEM_PTR;
-        uint256 blocks = (bytes(strConfigVariableName).length + 31) / 32 + 1;
-        bool success;
-        // solhint-disable-next-line no-inline-assembly
-        assembly {
-            let ptr := mload(fmp)
-            for { let i := 0 } lt( i, blocks ) { i := add(1, i) } {
-                let where := add(ptr, mul(32, i))
-                let what := mload(add(strConfigVariableName, mul(32, i)))
-                mstore(where, what)
-            }
-            success := staticcall(
-                not(0),
-                FN_NUM_GET_CONFIG_VARIABLE_STRING,
-                ptr,
-                mul( blocks, 32 ),
-                rv,
-                mul( 1024, 1024 )
-            )
-        }
+        (bool success, bytes memory answer) = FN_NUM_GET_CONFIG_VARIABLE_STRING.staticcall(
+            bytes(strConfigVariableName)
+        );
         require(success, "Get config string failed");
+        return string(answer);
     }
 
     function _getConfigVariableAddress(
@@ -69,22 +46,19 @@ contract ReaderFromConfig {
     )
         internal
         view
-        returns ( address rv )
+        returns (address)
     {
-        uint256 fmp = FREE_MEM_PTR;
-        uint256 blocks = (bytes(strConfigVariableName).length + 31) / 32 + 1;
-        bool success;
+        (bool success, bytes memory answer) = FN_NUM_GET_CONFIG_VARIABLE_ADDRESS.staticcall(
+            bytes(strConfigVariableName)
+        );
+        require(success, "Get config address failed");
+        return address(bytes20(_bytesToBytes32(answer)));
+    }
+
+    function _bytesToBytes32(bytes memory data) private pure returns (bytes32 result) {
         // solhint-disable-next-line no-inline-assembly
         assembly {
-            let ptr := mload(fmp)
-            for { let i := 0 } lt( i, blocks ) { i := add(1, i) } {
-                let where := add(ptr, mul(32, i))
-                let what := mload(add(strConfigVariableName, mul(32, i)))
-                mstore(where, what)
-            }
-            success := staticcall(not(0), FN_NUM_GET_CONFIG_VARIABLE_ADDRESS, ptr, mul( blocks, 32 ), ptr, 32)
-            rv := mload(ptr)
+            result := mload(add(data, 32))
         }
-        require(success, "Get config address failed");
     }
 }
