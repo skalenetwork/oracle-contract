@@ -55,10 +55,8 @@ contract ReaderFromConfig {
         return address(bytes20(_bytesToBytes32(answer)));
     }
 
-    function _bytesToBytes32(bytes memory data) private pure returns (bytes32 result) {
-        // solhint-disable-next-line no-inline-assembly
-        assembly {
-            result := mload(add(data, 32))
-        }
+    function _bytesToBytes32(bytes memory data) private pure returns (bytes32) {
+        require(data.length == 32, "Incorrect length of data");
+        return bytes32(data);
     }
 }
