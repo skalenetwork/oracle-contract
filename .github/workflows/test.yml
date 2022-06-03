@@ -46,7 +46,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
     - name: Install project
-      run: yarn install
+      run: yarn install --immutable --immutable-cache --check-cache
 
     - name: Install slither
       run: pip3 install -r scripts/requirements.txt

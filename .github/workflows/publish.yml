@@ -54,7 +54,7 @@ jobs:
       run: pip3 install -r ./predeployed/scripts/requirements.txt
 
     - name: Install project
-      run: yarn install
+      run: yarn install --immutable --immutable-cache --check-cache
 
     - name: Determine version
       run: |

@@ -35,36 +35,37 @@ contract OracleJson is IOracleJson {
     )
         private
         pure
-        returns (string memory wholeData)
+        returns (string memory)
     {
-        wholeData = "{";
-        wholeData = string.concat(wholeData, "\"cid\":", Strings.toString(cid), ",");
-        wholeData = string.concat(wholeData, "\"uri\":\"", uri, "\",");
-        wholeData = string.concat(wholeData, "\"jsps\":[");
+        string memory cidAndUriPart = string.concat("{\"cid\":", Strings.toString(cid), ",", "\"uri\":\"", uri, "\",");
+        string memory jspsPart = "\"jsps\":[";
         for (uint256 i = 0; i < jsps.length - 1; i++)
-            wholeData = string.concat(wholeData, "\"", jsps[i], "\",");
-        wholeData = string.concat(wholeData, "\"", jsps[jsps.length - 1], "\"],");
+            jspsPart = string.concat(jspsPart, "\"", jsps[i], "\",");
+        jspsPart = string.concat(jspsPart, "\"", jsps[jsps.length - 1], "\"],");
+        string memory trimsPart = "";
         if (trims.length != 0) {
-            wholeData = string.concat(wholeData, "\"trims\":[");
+            trimsPart = "\"trims\":[";
             for (uint256 i = 0; i < trims.length - 1; i++)
-                wholeData = string.concat(wholeData, Strings.toString(trims[i]), ",");
-            wholeData = string.concat(wholeData, Strings.toString(trims[trims.length - 1]), "],");
+                trimsPart = string.concat(trimsPart, Strings.toString(trims[i]), ",");
+            trimsPart = string.concat(trimsPart, Strings.toString(trims[trims.length - 1]), "],");
         }
+        string memory postPart = "";
         if (bytes(post).length != 0)
-            wholeData = string.concat(wholeData, "\"post\":\"", post, "\",");
-        wholeData = string.concat(wholeData, "\"time\":", Strings.toString(time), ",");
-        wholeData = string.concat(wholeData, "\"rslts\":[");
+            postPart = string.concat("\"post\":\"", post, "\",");
+        string memory timePart = string.concat("\"time\":", Strings.toString(time), ",");
+        string memory rsltsPart = "\"rslts\":[";
         for (uint256 i = 0; i < rslts.length - 1; i++)
-            wholeData = string.concat(
-                wholeData,
+            rsltsPart = string.concat(
+                rsltsPart,
                 !_compareString(rslts[i], "null") ? string.concat("\"", rslts[i], "\",") : "null,"
             );
-        wholeData = string.concat(
-            wholeData,
+        rsltsPart = string.concat(
+            rsltsPart,
             !_compareString(rslts[rslts.length - 1], "null") ?
                 string.concat("\"", rslts[rslts.length - 1], "\"],") :
                 "null],"
         );
+        return string.concat(cidAndUriPart, jspsPart, trimsPart, postPart, timePart, rsltsPart);
     }
 
     function _compareString(string memory a, string memory b) private pure returns (bool) {
