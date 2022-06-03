@@ -5,7 +5,6 @@ import "@openzeppelin/contracts/utils/Address.sol";
 
 contract ReaderFromConfig {
 
-    uint256 public constant FREE_MEM_PTR = 0x40;
     address public constant FN_NUM_GET_CONFIG_VARIABLE_UINT256 = 0x0000000000000000000000000000000000000013;
     address public constant FN_NUM_GET_CONFIG_VARIABLE_ADDRESS = 0x0000000000000000000000000000000000000014;
     address public constant FN_NUM_GET_CONFIG_VARIABLE_STRING = 0x0000000000000000000000000000000000000015;

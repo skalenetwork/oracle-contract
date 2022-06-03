@@ -17,7 +17,7 @@ contract NodesReader is ReaderFromConfig, INodesReader {
         return _getConfigVariableAddress(pathToAddress);
     }
 
-    function getCountOfTrustNumber() public view override returns (uint) {
+    function getTrustNumberOfNodes() public view override returns (uint) {
         uint n = getNumberOfNodesInSchain();
         return (n + 2) / 3; // n - (n * 2 + 1) / 3 + 1 = (n * 3 - n * 2 - 1 + 3) / 3 = (n + 2) / 3
     }

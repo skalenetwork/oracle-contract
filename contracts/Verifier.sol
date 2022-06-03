@@ -30,10 +30,13 @@ contract Verifier is NodesReader, IVerifier {
     {
         uint256 verifiedAmount = 0;
         for (uint256 i = 0; i < signatures.length; i++) {
-            if (signatures[i].v != 0 || signatures[i].r != bytes32(0) || signatures[i].s != bytes32(0)) {
-                verifiedAmount += verifySignature(i, hashedMessage, signatures[i]) ? 1 : 0;
+            if (
+                (signatures[i].v != 0 || signatures[i].r != bytes32(0) || signatures[i].s != bytes32(0)) &&
+                verifySignature(i, hashedMessage, signatures[i])
+            ) {
+                verifiedAmount++;
             }
         }
-        return verifiedAmount >= getCountOfTrustNumber();
+        return verifiedAmount >= getTrustNumberOfNodes();
     }
 }

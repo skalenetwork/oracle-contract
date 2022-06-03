@@ -279,7 +279,7 @@ function testOracle(deploy: () => Promise<OracleTester | OracleUpgradeableTester
             const numberOfNodes = await oracle.getNumberOfNodesInSchain();
             numberOfNodes.should.be.equal(4);
 
-            const countOfTrust = await oracle.getCountOfTrustNumber();
+            const countOfTrust = await oracle.getTrustNumberOfNodes();
             countOfTrust.should.be.equal(2);
 
             await oracle.setNodeAddress(wallet1.address);
@@ -401,7 +401,7 @@ function testOracle(deploy: () => Promise<OracleTester | OracleUpgradeableTester
             const numberOfNodes = await oracle.getNumberOfNodesInSchain();
             numberOfNodes.should.be.equal(4);
 
-            const countOfTrust = await oracle.getCountOfTrustNumber();
+            const countOfTrust = await oracle.getTrustNumberOfNodes();
             countOfTrust.should.be.equal(2);
 
             await oracle.setNodeAddress(wallet1.address);
@@ -564,7 +564,7 @@ function testOracle(deploy: () => Promise<OracleTester | OracleUpgradeableTester
             const numberOfNodes = await oracle.getNumberOfNodesInSchain();
             numberOfNodes.should.be.equal(4);
 
-            const countOfTrust = await oracle.getCountOfTrustNumber();
+            const countOfTrust = await oracle.getTrustNumberOfNodes();
             countOfTrust.should.be.equal(2);
 
             await oracle.setNodeAddress(wallet1.address);
@@ -686,7 +686,7 @@ function testOracle(deploy: () => Promise<OracleTester | OracleUpgradeableTester
             const numberOfNodes = await oracle.getNumberOfNodesInSchain();
             numberOfNodes.should.be.equal(4);
 
-            const countOfTrust = await oracle.getCountOfTrustNumber();
+            const countOfTrust = await oracle.getTrustNumberOfNodes();
             countOfTrust.should.be.equal(2);
 
             await oracle.setNodeAddress(wallet1.address);
@@ -874,7 +874,7 @@ function testOracle(deploy: () => Promise<OracleTester | OracleUpgradeableTester
             const numberOfNodes = await oracle.getNumberOfNodesInSchain();
             numberOfNodes.should.be.equal(4);
 
-            const countOfTrust = await oracle.getCountOfTrustNumber();
+            const countOfTrust = await oracle.getTrustNumberOfNodes();
             countOfTrust.should.be.equal(2);
 
             const nodeAddressInSchain1: string = ethers.utils.computeAddress(nodePublicKeyInSchain1);
@@ -993,7 +993,7 @@ function testOracle(deploy: () => Promise<OracleTester | OracleUpgradeableTester
             const numberOfNodes = await oracle.getNumberOfNodesInSchain();
             numberOfNodes.should.be.equal(4);
 
-            const countOfTrust = await oracle.getCountOfTrustNumber();
+            const countOfTrust = await oracle.getTrustNumberOfNodes();
             countOfTrust.should.be.equal(2);
 
             const nodeAddressInSchain1: string = ethers.utils.computeAddress(nodePublicKeyInSchain1);
