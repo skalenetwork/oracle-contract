@@ -16,7 +16,7 @@
         "cspell": "npx cspell \"**/*\"",
         "eslint": "npx eslint --cache --ext .js,.jsx,.ts,.tsx .",
         "slither": "slither .",
-        "fullcheck": "yarn lint && yarn cspell && yarn tsc && yarn eslint && yarn slither"
+        "fullcheck": "yarn lint && yarn cspell && yarn tsc && yarn eslint"
     },
     "dependencies": {
         "@nomiclabs/hardhat-ethers": "^2.0.2",
