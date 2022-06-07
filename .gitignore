@@ -1,0 +1,10 @@
+node_modules
+/artifacts/
+cache
+typechain
+
+yarn-error.log
+
+data/*.json
+
+.eslintcache

@@ -1,0 +1,5 @@
+mypy
+predeployed-generator
+pylint
+pytest
+pytest-cov
