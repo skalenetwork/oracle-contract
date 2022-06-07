@@ -25,7 +25,7 @@
         "@openzeppelin/contracts-upgradeable": "^4.6.0",
         "@openzeppelin/hardhat-upgrades": "^1.17.0",
         "@skalenetwork/upgrade-tools": "^1.0.0",
-        "axios": "^0.21.4",
+        "axios": "^0.27.2",
         "cspell": "^5.20.0",
         "dotenv": "^10.0.0",
         "eslint": "^8.15.0",
