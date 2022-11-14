@@ -37,7 +37,7 @@
     "devDependencies": {
         "@nomiclabs/hardhat-waffle": "^2.0.1",
         "@typechain/ethers-v5": "^6.0.5",
-        "@types/chai": "^4.2.12",
+        "@types/chai": "^4.3.4",
         "@types/chai-almost": "^1.0.1",
         "@types/chai-as-promised": "^7.1.3",
         "@types/minimist": "^1.2.0",
@@ -46,7 +46,7 @@
         "@typescript-eslint/eslint-plugin": "^5.19.0",
         "@typescript-eslint/parser": "^5.19.0",
         "bignumber.js": "^9.0.0",
-        "chai": "^4.2.0",
+        "chai": "^4.3.7",
         "chai-almost": "^1.0.1",
         "chai-as-promised": "^7.1.1",
         "codecov": "^3.7.1",
