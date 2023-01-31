@@ -15,6 +15,7 @@ interface IOracle {
         string[] rslts;
         IVerifier.Signature[] sigs;
     }
-    
+
     function verifyOracleResponse(OracleResponse memory response) external view returns (bool);
+    function version() external view returns (string memory);
 }

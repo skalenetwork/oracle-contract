@@ -7,6 +7,8 @@ import "./interfaces/IOracle.sol";
 
 contract Oracle is Verifier, OracleJson, IOracle {
 
+    string public constant version = $(VERSION);
+
     function verifyOracleResponse(OracleResponse memory response) public view override returns (bool) {
         require(
             response.jsps.length > 0 && response.jsps.length == response.rslts.length &&

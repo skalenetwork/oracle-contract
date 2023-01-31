@@ -12,6 +12,8 @@ contract OracleUpgradeable is Verifier, OracleJson, IOracleUpgradeable, Initiali
     // solhint-disable-next-line no-empty-blocks
     function initialize() external initializer override {}
 
+    string public constant version = $(VERSION);
+
     function verifyOracleResponse(OracleResponse memory response) public view override returns (bool) {
         require(
             response.jsps.length > 0 && response.jsps.length == response.rslts.length &&
