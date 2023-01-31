@@ -7,7 +7,6 @@ import "hardhat-typechain";
 import "solidity-coverage";
 import * as dotenv from "dotenv";
 import { readFileSync } from "fs";
-import { finalizeSettings } from "cspell-lib";
 
 dotenv.config();
 

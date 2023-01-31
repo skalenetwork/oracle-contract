@@ -7,7 +7,11 @@ import "./interfaces/IOracle.sol";
 
 contract Oracle is Verifier, OracleJson, IOracle {
 
-    string public constant version = $(VERSION);
+    string private constant _VERSION = $(VERSION);
+
+    function version() external pure override returns (string memory) {
+        return _VERSION;
+    }
 
     function verifyOracleResponse(OracleResponse memory response) public view override returns (bool) {
         require(
