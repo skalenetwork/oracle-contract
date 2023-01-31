@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# cSpell:words wholename
+
 set -e
 
 cd "$(dirname "$0")/.."
