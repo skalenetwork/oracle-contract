@@ -1039,8 +1039,7 @@ function testOracle(deploy: () => Promise<OracleTester | OracleUpgradeableTester
 
     it("should return version", async () => {
         const versionFromFile = (await fs.readFile("./VERSION", "utf-8")).trim();
-        expect(await oracle.version()).to.be.equal(versionFromFile)
-        console.log(await oracle.version());
+        expect(await oracle.version()).to.be.equal(versionFromFile);
     })
 
 }
