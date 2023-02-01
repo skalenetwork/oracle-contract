@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0
-pragma solidity 0.8.13;
+pragma solidity 0.8.17;
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
@@ -9,8 +9,14 @@ import "./interfaces/IOracleUpgradeable.sol";
 
 contract OracleUpgradeable is Verifier, OracleJson, IOracleUpgradeable, Initializable {
 
+    string private constant _VERSION = $(VERSION);
+
     // solhint-disable-next-line no-empty-blocks
     function initialize() external initializer override {}
+
+    function version() external pure override returns (string memory) {
+        return _VERSION;
+    }
 
     function verifyOracleResponse(OracleResponse memory response) public view override returns (bool) {
         require(

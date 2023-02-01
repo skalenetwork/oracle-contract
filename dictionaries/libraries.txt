@@ -11,5 +11,6 @@ pytest
 pythonpath
 setuptools
 solhint
+solpp
 typechain
 venv

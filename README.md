@@ -1,4 +1,5 @@
 # oracle-contract
+
 Predeployed contract to verify Oracle responses
 
 ## Description
@@ -70,9 +71,9 @@ t - threshold number for BLS signature ( `2/3n + 1` )
 
 ## Install
 
-1)  Clone this repo and enter the repo
-2)  run `cd oracle-contract/`
-2)  run `yarn install`
+1) Clone this repo and enter the repo
+2) run `cd oracle-contract/`
+3) run `yarn install`
 
 ## Deployment
 
@@ -81,28 +82,28 @@ The `.env` file in the `oracle-contract` folder should include the following var
 ```bash
 ENDPOINT="your mainnet RPC url, it also can be an infura endpoint"
 PRIVATE_KEY="your private key for mainnet"
-GASPRICE="preferred gas price (optional param)" 
+GASPRICE="preferred gas price (optional param)"
 ```
 
--   deploy production upgradeable version to custom network:
+- deploy production upgradeable version to custom network:
 
 ```bash
 yarn deploy --network custom
 ```
 
--   deploy production not upgradeable version to custom network:
+- deploy production not upgradeable version to custom network:
 
 ```bash
 yarn deploy-not-upgradeable --network custom
 ```
 
--   deploy test version to custom network:
+- deploy test version to custom network:
 
 ```bash
 yarn deploy-test --network custom
 ```
 
--   deploy test not upgradeable version to custom network:
+- deploy test not upgradeable version to custom network:
 
 ```bash
 yarn deploy-test-not-upgradeable --network custom
@@ -116,14 +117,14 @@ yarn test
 
 ## Usage
 
-1)  Install `@skalenetwork/oracle-interfaces` npm package by npm or yarn
-2)  Import `IOracle.sol` in your Solidity smart contract
-3)  Import a predeployed address `0xd205aC1e00000000000000000000000000000000` in your Solidity smart contract
-3)  Run verification
+1) Install `@skalenetwork/oracle-interfaces` npm package by npm or yarn
+2) Import `IOracle.sol` in your Solidity smart contract
+3) Import a predeployed address `0xd205aC1e00000000000000000000000000000000` in your Solidity smart contract
+4) Run verification
 
 ```solidity
 // SPDX-License-Identifier: AGPL-3.0
-pragma solidity 0.8.13;
+pragma solidity 0.8.17;
 
 import "@skalenetwork/oracle-interfaces/IOracle.sol";
 

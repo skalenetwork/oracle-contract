@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
+# cSpell:words wholename
+
 set -e
 
 cd "$(dirname "$0")/.."
 ./scripts/generate_package_version.py > version.txt
 ARTIFACTS_DIR="src/oracle_predeployed/artifacts/"
-cp -v "../artifacts/contracts/Oracle.sol/Oracle.json" "$ARTIFACTS_DIR"
-cp -v "../artifacts/contracts/OracleUpgradeable.sol/OracleUpgradeable.json" "$ARTIFACTS_DIR"
+find ../artifacts/ -wholename "*/Oracle.sol/Oracle.json" -exec cp -v '{}' "$ARTIFACTS_DIR" \;
+find ../artifacts/ -wholename "*/OracleUpgradeable.sol/OracleUpgradeable.json" -exec cp -v '{}' "$ARTIFACTS_DIR" \;
 python3 -m build
