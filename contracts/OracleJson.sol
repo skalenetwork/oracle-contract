@@ -43,21 +43,28 @@ contract OracleJson is IOracleJson {
         pure
         returns (string memory)
     {
-        string memory cidAndUriPart = string.concat("{\"cid\":", Strings.toString(cid), ",", "\"uri\":\"", uri, "\",");
-        string memory encodingPart = string.concat("\"encoding\":\"", encoding, "\",");
+        string memory cidAndUriAndEncodingPart = string.concat(
+            "{\"cid\":",
+            Strings.toString(cid),
+            ",\"uri\":\"",
+            uri,
+            "\",\"encoding\":\"",
+            encoding,
+            "\","
+        );
         string memory requestPart = "";
         if (bytes(ethApi).length > 0) {
             requestPart = _combineEthApiPart(ethApi, params);
         } else {
             requestPart = _combineWebPart(jsps, trims, post);
         }
+        string memory timePart = string.concat("\"time\":", Strings.toString(time), ",");
         string memory rsltsPart = "\"rslts\":[";
         for (uint256 i = 0; i < rslts.length - 1; i++)
             rsltsPart = string.concat(
                 rsltsPart,
                 !_compareString(rslts[i], "null") ? string.concat("\"", rslts[i], "\",") : "null,"
             );
-        string memory timePart = string.concat("\"time\":", Strings.toString(time), ",");
         rsltsPart = string.concat(
             rsltsPart,
             !_compareString(rslts[rslts.length - 1], "null") ?
@@ -65,8 +72,7 @@ contract OracleJson is IOracleJson {
                 "null],"
         );
         return string.concat(
-            cidAndUriPart,
-            encodingPart,
+            cidAndUriAndEncodingPart,
             requestPart,
             timePart,
             rsltsPart
