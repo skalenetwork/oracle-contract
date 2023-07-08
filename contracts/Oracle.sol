@@ -9,8 +9,10 @@ contract Oracle is Verifier, OracleJson, IOracle {
 
     function verifyOracleResponse(OracleResponse memory response) public view override returns (bool) {
         require(
-            response.jsps.length > 0 && response.jsps.length == response.rslts.length &&
-            (response.trims.length == 0 || response.trims.length == response.rslts.length),
+            bytes(response.ethApi).length > 0 || (
+                response.jsps.length > 0 && response.jsps.length == response.rslts.length &&
+                (response.trims.length == 0 || response.trims.length == response.rslts.length)
+            ),
             "Incorrect number of results"
         );
         // verify signature

@@ -11,7 +11,7 @@ contract NodesReader is ReaderFromConfig, INodesReader {
 
     function getNodeAddress(uint256 nodeIndex) public view virtual override returns (address) {
         string memory pathToAddress = string.concat(
-            "skaleConfig.sChain.nodes[",
+            "skaleConfig.sChain.nodes.[",
             Strings.toString(nodeIndex), "].owner"
         );
         return _getConfigVariableAddress(pathToAddress);
@@ -23,6 +23,6 @@ contract NodesReader is ReaderFromConfig, INodesReader {
     }
 
     function getNumberOfNodesInSchain() public view virtual override returns (uint256) {
-        return _getConfigVariableUint256("skaleConfig.nodeInfo.wallets.ima.n");
+        return _getConfigVariableUint256("skaleConfig.sChain.nodes.length");
     }
 }
