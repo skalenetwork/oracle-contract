@@ -45,31 +45,12 @@ contract OracleJson is IOracleJson {
     {
         string memory cidAndUriPart = string.concat("{\"cid\":", Strings.toString(cid), ",", "\"uri\":\"", uri, "\",");
         string memory encodingPart = string.concat("\"encoding\":\"", encoding, "\",");
-        string memory ethApiPart = "";
+        string memory requestPart = "";
         if (bytes(ethApi).length > 0) {
-            ethApiPart = string.concat("\"ethApi\":\"", ethApi, "\",");
+            requestPart = _combineEthApiPart(ethApi, params);
+        } else {
+            requestPart = _combineWebPart(jsps, trims, post);
         }
-        string memory paramsPart = "";
-        if (bytes(ethApi).length > 0 && bytes(params).length > 0) {
-            paramsPart = string.concat("\"params\":", params, ",");
-        }
-        string memory jspsPart = "";
-        if (bytes(ethApi).length == 0 && jsps.length > 0) {
-            jspsPart = "\"jsps\":[";
-            for (uint256 i = 0; i < jsps.length - 1; i++)
-                jspsPart = string.concat(jspsPart, "\"", jsps[i], "\",");
-            jspsPart = string.concat(jspsPart, "\"", jsps[jsps.length - 1], "\"],");    
-        }
-        string memory trimsPart = "";
-        if (bytes(ethApi).length == 0 && trims.length != 0) {
-            trimsPart = "\"trims\":[";
-            for (uint256 i = 0; i < trims.length - 1; i++)
-                trimsPart = string.concat(trimsPart, Strings.toString(trims[i]), ",");
-            trimsPart = string.concat(trimsPart, Strings.toString(trims[trims.length - 1]), "],");
-        }
-        string memory postPart = "";
-        if (bytes(ethApi).length == 0 && bytes(post).length != 0)
-            postPart = string.concat("\"post\":\"", post, "\",");
         string memory rsltsPart = "\"rslts\":[";
         for (uint256 i = 0; i < rslts.length - 1; i++)
             rsltsPart = string.concat(
@@ -86,14 +67,58 @@ contract OracleJson is IOracleJson {
         return string.concat(
             cidAndUriPart,
             encodingPart,
-            ethApiPart,
-            paramsPart,
-            jspsPart,
-            trimsPart,
-            postPart,
+            requestPart,
             timePart,
             rsltsPart
         );
+    }
+
+    function _combineEthApiPart(
+        string memory ethApi,
+        string memory params
+    )
+        private
+        pure
+        returns (string memory)
+    {
+        string memory ethApiPart = string.concat("\"ethApi\":\"", ethApi, "\",");
+        if (bytes(ethApi).length > 0) {
+            ethApiPart = string.concat("\"ethApi\":\"", ethApi, "\",");
+        }
+        string memory paramsPart = "";
+        if (bytes(params).length > 0) {
+            paramsPart = string.concat("\"params\":", params, ",");
+        }
+        return string.concat(ethApiPart, paramsPart);
+    }
+
+    function _combineWebPart(
+        string[] memory jsps,
+        uint256[] memory trims,
+        string memory post
+    )
+        private
+        pure
+        returns (string memory)
+    {
+        string memory jspsPart = "";
+        if (jsps.length > 0) {
+            jspsPart = "\"jsps\":[";
+            for (uint256 i = 0; i < jsps.length - 1; i++)
+                jspsPart = string.concat(jspsPart, "\"", jsps[i], "\",");
+            jspsPart = string.concat(jspsPart, "\"", jsps[jsps.length - 1], "\"],");    
+        }
+        string memory trimsPart = "";
+        if (trims.length > 0) {
+            trimsPart = "\"trims\":[";
+            for (uint256 i = 0; i < trims.length - 1; i++)
+                trimsPart = string.concat(trimsPart, Strings.toString(trims[i]), ",");
+            trimsPart = string.concat(trimsPart, Strings.toString(trims[trims.length - 1]), "],");
+        }
+        string memory postPart = "";
+        if (bytes(post).length != 0)
+            postPart = string.concat("\"post\":\"", post, "\",");
+        return string.concat(jspsPart, trimsPart, postPart);
     }
 
     function _compareString(string memory a, string memory b) private pure returns (bool) {
