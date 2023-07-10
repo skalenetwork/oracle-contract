@@ -8,6 +8,9 @@ interface IOracle {
     struct OracleResponse {
         uint256 cid;
         string uri;
+        string encoding;
+        string ethApi;
+        string params;
         string[] jsps;
         uint256[] trims;
         string post;

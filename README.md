@@ -138,6 +138,7 @@ contract VerifyOracleResponses {
     {
         require(IOracle(ORACLE_ADDRESS).verifyOracleResponse(response), "Verification is failed");
     }
+}
 ```
 
 ### Python Oracle usage
