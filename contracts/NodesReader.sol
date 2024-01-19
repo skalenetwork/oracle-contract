@@ -23,6 +23,6 @@ contract NodesReader is ReaderFromConfig, INodesReader {
     }
 
     function getNumberOfNodesInSchain() public view virtual override returns (uint256) {
-        return _getConfigVariableUint256("skaleConfig.sChain.nodes.length");
+        return _getConfigVariableUint256("skaleConfig.nodeInfo.wallets.ima.n");
     }
 }
