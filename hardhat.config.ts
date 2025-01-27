@@ -1,10 +1,12 @@
 import { HardhatUserConfig } from "hardhat/config";
 import "@openzeppelin/hardhat-upgrades";
+import "@nomiclabs/hardhat-solpp";
 import "@nomiclabs/hardhat-waffle";
 import "@nomiclabs/hardhat-web3";
 import "hardhat-typechain";
 import "solidity-coverage";
 import * as dotenv from "dotenv";
+import { readFileSync } from "fs";
 
 dotenv.config();
 
@@ -32,10 +34,15 @@ function getGasPrice(gasPrice: string | undefined) {
   }
 }
 
+function getVersion() {
+  // TODO: add more refined version
+  return readFileSync("./VERSION", {encoding: "utf-8"}).trim();
+}
+
 const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
   solidity: {
-    version: '0.8.13',
+    version: '0.8.17',
     settings: {
       optimizer:{
         enabled: true,
@@ -55,6 +62,11 @@ const config: HardhatUserConfig = {
       url: getCustomUrl(process.env.ENDPOINT),
       accounts: getCustomPrivateKey(process.env.PRIVATE_KEY),
       gasPrice: getGasPrice(process.env.GASPRICE)
+    }
+  },
+  solpp: {
+    defs: {
+      VERSION: `"${getVersion()}"`
     }
   }
 };
